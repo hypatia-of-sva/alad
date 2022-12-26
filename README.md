@@ -29,6 +29,6 @@ Unload the library loaded with default initalization with
         aladTerminate();
 
 
-ALAD will attempt to load all function pointers in all extensions, the ones not available will be NULL, you have to check all functions you want to use for that.
+alad will attempt to load all function pointers in all extensions, the ones not available will be NULL, you have to check all functions you want to use for that.
 The ALC_INVALID_VALUE-Error-State of alcGetProcAddress is not being checked.
 If a functionality you expect to be present isn't working, you might want to check the spelling of the string in the internal "_alad_load_alc_functions" function.
