@@ -33,6 +33,6 @@ This will not unload the function pointers or set them to NULL, but they will be
 
 alad will attempt to load all function pointers in all extensions as currently described in the openal-soft headers (repo version from 24.12.2022, commit https://github.com/kcat/openal-soft/commit/4fe6eba8c79a4c9cad91d6f6835506cde96a48c4), the ones not available will be NULL, you have to check all functions you want to use for that.
 The ALC_INVALID_VALUE-Error-State of alcGetProcAddress is not being checked.
-If a functionality you expect to be present isn't working, you might want to check the spelling of the string in the internal "_alad_load_alc_functions" function.
+If a functionality you expect to be present isn't working, you might want to check the spelling of the strings in the internal "_alad_load_alc_functions" function.
 
 Dependencies for compilation: Kernel32.dll on Windows and -ldl on Unix for the default initialization.
