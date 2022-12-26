@@ -28,7 +28,7 @@
  * 
  *  
  *  alad will attempt to load all function pointers in all extensions currently described in the openal-soft headers
- *  (repo version from 24.12.2022, commit 4fe6eba8c79a4c9cad91d6f6835506cde96a48c4),
+ *  (repo version from 24.12.2022, commit https://github.com/kcat/openal-soft/commit/4fe6eba8c79a4c9cad91d6f6835506cde96a48c4),
  *  the ones not available will be NULL, you have to check all functions you want to use for that. you have to check all functions you want to use for that.
  *  The ALC_INVALID_VALUE-Error-State of alcGetProcAddress is not being checked.
  *  If a functionality you expect to be present isn't working, you might want to check the spelling of the
