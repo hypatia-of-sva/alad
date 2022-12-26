@@ -3,7 +3,8 @@
  * 
  *  Usage:
  * 
- *  Initalize with
+ *  This header loads in all OpenAL symbols except the functions. 
+ *  Initalize those with
  * 
  *          aladLoadAL(NULL);
  * 
