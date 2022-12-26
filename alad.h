@@ -23,6 +23,7 @@
  *  Unload the library loaded with default initalization with
  * 
  *          aladTerminate();
+ *
  *  This will not unload the function pointers or set them to NULL, but they will be probably invalid after unloading the shared library.
  * 
  *  
