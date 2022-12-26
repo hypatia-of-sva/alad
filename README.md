@@ -1,6 +1,6 @@
 # alad
 
-alad - glad-like OpenAL-loader by Hypatia of Sva
+glad-like OpenAL-loader by Hypatia of Sva
 
 Usage:
 
