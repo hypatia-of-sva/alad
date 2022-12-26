@@ -1776,5 +1776,5 @@ void aladUpdateALCPointers(ALCdevice *device) {
 }
 
 void aladTerminate() {
-    _alad_close();
+    _alad_unload_lib();
 }
