@@ -1,8 +1,13 @@
 # alad
 
 glad-like OpenAL-loader by Hypatia of Sva
+Header only C99 library.
 
 Usage:
+
+Include the single header
+
+        #include "alad.h"
 
 Initalize with
 
