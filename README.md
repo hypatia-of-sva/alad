@@ -20,7 +20,7 @@ where my_alGetProcAddress is a loader function of type LPALGETPROCADDRESS for cu
 Default initialization will pull in "OpenAL32.dll" or "soft_oal.dll" on Windows and "libopenal.so" or "libopenal.so.1" on Unix respectively.
 Make sure one of these dynamic libraries are on path for LoadLibraryA / dlopen, change the code in the internal function "_alad_open" or provide your own function loader.
 
-Uodate ALC pointers to those loaded with a specific ALCdevice with
+Update ALC pointers to those loaded with a specific ALCdevice with
 
         aladUpdateALCPointers(device);
 
