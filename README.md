@@ -27,6 +27,8 @@ Update ALC pointers to those loaded with a specific ALCdevice with
 Unload the library loaded with default initalization with
 
         aladTerminate();
+        
+This will not unload the function pointers or set them to NULL, but they will be probably invalid after unloading.
 
 
 alad will attempt to load all function pointers in all extensions, the ones not available will be NULL, you have to check all functions you want to use for that.
