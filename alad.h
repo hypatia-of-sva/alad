@@ -57,6 +57,8 @@
  * Or go to http://www.gnu.org/copyleft/lgpl.html
  */
 
+#pragma once
+
 //for NULL
 #include <stdlib.h>
 
