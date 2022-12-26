@@ -8,7 +8,7 @@ Include the single header
 
         #include "alad.h"
 
-Initalize with
+This will pull in all OpenAL symbols except the functions. Initalize with
 
         aladLoadAL(NULL);
 
