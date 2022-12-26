@@ -1,6 +1,6 @@
 # alad
 
-[glad](https://github.com/Dav1dde/glad)-like, header-only C99 [OpenAL](http://www.openal.org/)-loader library by Hypatia of Sva
+alad is a [glad](https://github.com/Dav1dde/glad)-like, header-only C99 [OpenAL](http://www.openal.org/)-loader library by Hypatia of Sva
 
 Usage:
 
