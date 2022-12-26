@@ -1,7 +1,6 @@
 # alad
 
-glad-like OpenAL-loader by Hypatia of Sva
-Header only C99 library.
+glad-like, header-only C99 OpenAL-loader library by Hypatia of Sva
 
 Usage:
 
