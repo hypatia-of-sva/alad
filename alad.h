@@ -65,6 +65,10 @@
 
 #pragma once
 
+//only include alad if the OpenAL headers are not used, because we redefine the function and type names
+#if !(defined(ALAD_H)) && !(defined(AL_AL_H)) && !(defined(AL_ALC_H)) && !(defined(AL_ALEXT_H)) && !(defined(AL_EFX_H)) && !(defined(EFX_PRESETS_H))
+#define ALAD_H
+
 //for NULL
 #include <stdlib.h>
 
@@ -1791,7 +1795,7 @@ void aladTerminate() {
 }
 
 
-#else
+#else // that is when !defined(ALAD_IMPLEMENTATION)
 
 
 extern void aladLoadAL(LPALGETPROCADDRESS inital_loader);
@@ -1991,4 +1995,6 @@ extern LPALCGETINTEGER64VSOFT alcGetInteger64vSOFT;
 //ALC_SOFT_reopen_device
 extern LPALCREOPENDEVICESOFT alcReopenDeviceSOFT;
 
-#endif
+#endif // ALAD_IMPLEMENTATION
+
+#endif // ALAD_H
