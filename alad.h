@@ -21,7 +21,7 @@
  *  where my_alGetProcAddress is a loader function of type LPALGETPROCADDRESS for custom initalization.
  *  Default initialization will pull in OpenAL32.dll / soft_oal.dll on Windows or libopenal.so / libopenal.so.1 on Unix respectively.
  *  Make sure one of these dynamic libraries are on path for LoadLibraryA / dlopen, change the code below in _alad_open or provide your own function loader.
- *  The Library will only be initalized once, you can call "aladLoadAL(NULL)" as often as you want to reload the pointer from the loaded shared library module.
+ *  The Library will only be initalized once, you can call "aladLoadAL(NULL)" as often as you want to reload the pointer from the loaded shared library.
  *
  *  Update ALC pointers to those loaded with a specific ALCdevice with
  * 
