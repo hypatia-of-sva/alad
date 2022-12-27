@@ -1791,7 +1791,7 @@ void aladTerminate() {
 }
 
 
-#elseif
+#else
 
 
 extern void aladLoadAL(LPALGETPROCADDRESS inital_loader);
