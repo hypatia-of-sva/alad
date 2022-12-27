@@ -2,6 +2,12 @@
  *  alad - glad-like OpenAL-loader by Hypatia of Sva
  * 
  *  Usage:
+ *
+ *  Include once with
+ *
+ *          #define ALAD_IMPLEMENTATION
+ *
+ *  to define the functions and global function pointers, and without that in all other translation units.
  * 
  *  This header loads in all OpenAL symbols except the functions. 
  *  Initalize those with
@@ -1306,7 +1312,7 @@ typedef void (AL_APIENTRY *LPALGETAUXILIARYEFFECTSLOTFV)(ALuint, ALenum, ALfloat
 
 
 
-
+#ifdef ALAD_IMPLEMENTATION
 
 //Core AL
 LPALDOPPLERFACTOR alDopplerFactor = NULL;
@@ -1783,3 +1789,206 @@ void aladUpdateALCPointers(ALCdevice *device) {
 void aladTerminate() {
     _alad_unload_lib();
 }
+
+
+#elseif
+
+
+extern void aladLoadAL(LPALGETPROCADDRESS inital_loader);
+extern void aladUpdateALCPointers(ALCdevice *device);
+extern void aladTerminate();
+
+//Core AL
+extern LPALDOPPLERFACTOR alDopplerFactor;
+extern LPALDOPPLERVELOCITY alDopplerVelocity;
+extern LPALSPEEDOFSOUND alSpeedOfSound;
+extern LPALDISTANCEMODEL alDistanceModel;
+extern LPALENABLE alEnable;
+extern LPALDISABLE alDisable;
+extern LPALISENABLED alIsEnabled;
+extern LPALGETSTRING alGetString;
+extern LPALGETBOOLEANV alGetBooleanv;
+extern LPALGETINTEGERV alGetIntegerv;
+extern LPALGETFLOATV alGetFloatv;
+extern LPALGETDOUBLEV alGetDoublev;
+extern LPALGETBOOLEAN alGetBoolean;
+extern LPALGETINTEGER alGetInteger;
+extern LPALGETFLOAT alGetFloat;
+extern LPALGETDOUBLE alGetDouble;
+extern LPALGETERROR alGetError;
+extern LPALISEXTENSIONPRESENT alIsExtensionPresent;
+extern LPALGETPROCADDRESS alGetProcAddress;
+extern LPALGETENUMVALUE alGetEnumValue;
+extern LPALLISTENERF alListenerf;
+extern LPALLISTENER3F alListener3f;
+extern LPALLISTENERFV alListenerfv;
+extern LPALLISTENERI alListeneri;
+extern LPALLISTENER3I alListener3i;
+extern LPALLISTENERIV alListeneriv;
+extern LPALGETLISTENERF alGetListenerf;
+extern LPALGETLISTENER3F alGetListener3f;
+extern LPALGETLISTENERFV alGetListenerfv;
+extern LPALGETLISTENERI alGetListeneri;
+extern LPALGETLISTENER3I alGetListener3i;
+extern LPALGETLISTENERIV alGetListeneriv;
+extern LPALGENSOURCES alGenSources;
+extern LPALDELETESOURCES alDeleteSources;
+extern LPALISSOURCE alIsSource;
+extern LPALSOURCEF alSourcef;
+extern LPALSOURCE3F alSource3f;
+extern LPALSOURCEFV alSourcefv;
+extern LPALSOURCEI alSourcei;
+extern LPALSOURCE3I alSource3i;
+extern LPALSOURCEIV alSourceiv;
+extern LPALGETSOURCEF alGetSourcef;
+extern LPALGETSOURCE3F alGetSource3f;
+extern LPALGETSOURCEFV alGetSourcefv;
+extern LPALGETSOURCEI alGetSourcei;
+extern LPALGETSOURCE3I alGetSource3i;
+extern LPALGETSOURCEIV alGetSourceiv;
+extern LPALSOURCEPLAYV alSourcePlayv;
+extern LPALSOURCESTOPV alSourceStopv;
+extern LPALSOURCEREWINDV alSourceRewindv;
+extern LPALSOURCEPAUSEV alSourcePausev;
+extern LPALSOURCEPLAY alSourcePlay;
+extern LPALSOURCESTOP alSourceStop;
+extern LPALSOURCEREWIND alSourceRewind;
+extern LPALSOURCEPAUSE alSourcePause;
+extern LPALSOURCEQUEUEBUFFERS alSourceQueueBuffers;
+extern LPALSOURCEUNQUEUEBUFFERS alSourceUnqueueBuffers;
+extern LPALGENBUFFERS alGenBuffers;
+extern LPALDELETEBUFFERS alDeleteBuffers;
+extern LPALISBUFFER alIsBuffer;
+extern LPALBUFFERDATA alBufferData;
+extern LPALBUFFERF alBufferf;
+extern LPALBUFFER3F alBuffer3f;
+extern LPALBUFFERFV alBufferfv;
+extern LPALBUFFERI alBufferi;
+extern LPALBUFFER3I alBuffer3i;
+extern LPALBUFFERIV alBufferiv;
+extern LPALGETBUFFERF alGetBufferf;
+extern LPALGETBUFFER3F alGetBuffer3f;
+extern LPALGETBUFFERFV alGetBufferfv;
+extern LPALGETBUFFERI alGetBufferi;
+extern LPALGETBUFFER3I alGetBuffer3i;
+extern LPALGETBUFFERIV alGetBufferiv;
+
+//EFX
+extern LPALGENEFFECTS alGenEffects;
+extern LPALDELETEEFFECTS alDeleteEffects;
+extern LPALISEFFECT alIsEffect;
+extern LPALEFFECTI alEffecti;
+extern LPALEFFECTIV alEffectiv;
+extern LPALEFFECTF alEffectf;
+extern LPALEFFECTFV alEffectfv;
+extern LPALGETEFFECTI alGetEffecti;
+extern LPALGETEFFECTIV alGetEffectiv;
+extern LPALGETEFFECTF alGetEffectf;
+extern LPALGETEFFECTFV alGetEffectfv;
+extern LPALGENFILTERS alGenFilters;
+extern LPALDELETEFILTERS alDeleteFilters;
+extern LPALISFILTER alIsFilter;
+extern LPALFILTERI alFilteri;
+extern LPALFILTERIV alFilteriv;
+extern LPALFILTERF alFilterf;
+extern LPALFILTERFV alFilterfv;
+extern LPALGETFILTERI alGetFilteri;
+extern LPALGETFILTERIV alGetFilteriv;
+extern LPALGETFILTERF alGetFilterf;
+extern LPALGETFILTERFV alGetFilterfv;
+extern LPALGENAUXILIARYEFFECTSLOTS alGenAuxiliaryEffectSlots;
+extern LPALDELETEAUXILIARYEFFECTSLOTS alDeleteAuxiliaryEffectSlots;
+extern LPALISAUXILIARYEFFECTSLOT alIsAuxiliaryEffectSlot;
+extern LPALAUXILIARYEFFECTSLOTI alAuxiliaryEffectSloti;
+extern LPALAUXILIARYEFFECTSLOTIV alAuxiliaryEffectSlotiv;
+extern LPALAUXILIARYEFFECTSLOTF alAuxiliaryEffectSlotf;
+extern LPALAUXILIARYEFFECTSLOTFV alAuxiliaryEffectSlotfv;
+extern LPALGETAUXILIARYEFFECTSLOTI alGetAuxiliaryEffectSloti;
+extern LPALGETAUXILIARYEFFECTSLOTIV alGetAuxiliaryEffectSlotiv;
+extern LPALGETAUXILIARYEFFECTSLOTF alGetAuxiliaryEffectSlotf;
+extern LPALGETAUXILIARYEFFECTSLOTFV alGetAuxiliaryEffectSlotfv;
+
+//AL extensions
+//AL_EXT_STATIC_BUFFER
+extern PFNALBUFFERDATASTATICPROC alBufferDataStatic;
+//AL_SOFT_buffer_sub_data
+extern PFNALBUFFERSUBDATASOFTPROC alBufferSubDataSOFT;
+//AL_EXT_FOLDBACK
+extern LPALREQUESTFOLDBACKSTART alRequestFoldbackStart;
+extern LPALREQUESTFOLDBACKSTOP alRequestFoldbackStop;
+//AL_SOFT_buffer_samples
+extern LPALBUFFERSAMPLESSOFT alBufferSamplesSOFT;
+extern LPALBUFFERSUBSAMPLESSOFT alBufferSubSamplesSOFT;
+extern LPALGETBUFFERSAMPLESSOFT alGetBufferSamplesSOFT;
+extern LPALISBUFFERFORMATSUPPORTEDSOFT alIsBufferFormatSupportedSOFT;
+//AL_SOFT_source_latency
+extern LPALSOURCEDSOFT alSourcedSOFT;
+extern LPALSOURCE3DSOFT alSource3dSOFT;
+extern LPALSOURCEDVSOFT alSourcedvSOFT;
+extern LPALGETSOURCEDSOFT alGetSourcedSOFT;
+extern LPALGETSOURCE3DSOFT alGetSource3dSOFT;
+extern LPALGETSOURCEDVSOFT alGetSourcedvSOFT;
+extern LPALSOURCEI64SOFT alSourcei64SOFT;
+extern LPALSOURCE3I64SOFT alSource3i64SOFT;
+extern LPALSOURCEI64VSOFT alSourcei64vSOFT;
+extern LPALGETSOURCEI64SOFT alGetSourcei64SOFT;
+extern LPALGETSOURCE3I64SOFT alGetSource3i64SOFT;
+extern LPALGETSOURCEI64VSOFT alGetSourcei64vSOFT;
+//AL_SOFT_deferred_updates
+extern LPALDEFERUPDATESSOFT alDeferUpdatesSOFT;
+extern LPALPROCESSUPDATESSOFT alProcessUpdatesSOFT;
+//AL_SOFT_source_resampler
+extern LPALGETSTRINGISOFT alGetStringiSOFT;
+//AL_SOFT_events
+extern LPALEVENTCONTROLSOFT alEventControlSOFT;
+extern LPALEVENTCALLBACKSOFT alEventCallbackSOFT;
+extern LPALGETPOINTERSOFT alGetPointerSOFT;
+extern LPALGETPOINTERVSOFT alGetPointervSOFT;
+//AL_SOFT_callback_buffer
+extern LPALBUFFERCALLBACKSOFT alBufferCallbackSOFT;
+extern LPALGETBUFFERPTRSOFT alGetBufferPtrSOFT;
+extern LPALGETBUFFER3PTRSOFT alGetBuffer3PtrSOFT;
+extern LPALGETBUFFERPTRVSOFT alGetBufferPtrvSOFT;
+
+//Core ALC
+extern LPALCCREATECONTEXT alcCreateContext;
+extern LPALCMAKECONTEXTCURRENT alcMakeContextCurrent;
+extern LPALCPROCESSCONTEXT alcProcessContext;
+extern LPALCSUSPENDCONTEXT alcSuspendContext;
+extern LPALCDESTROYCONTEXT alcDestroyContext;
+extern LPALCGETCURRENTCONTEXT alcGetCurrentContext;
+extern LPALCGETCONTEXTSDEVICE alcGetContextsDevice;
+extern LPALCOPENDEVICE alcOpenDevice;
+extern LPALCCLOSEDEVICE alcCloseDevice;
+extern LPALCGETERROR alcGetError;
+extern LPALCISEXTENSIONPRESENT alcIsExtensionPresent;
+extern LPALCGETPROCADDRESS alcGetProcAddress;
+extern LPALCGETENUMVALUE alcGetEnumValue;
+extern LPALCGETSTRING alcGetString;
+extern LPALCGETINTEGERV alcGetIntegerv;
+extern LPALCCAPTUREOPENDEVICE alcCaptureOpenDevice;
+extern LPALCCAPTURECLOSEDEVICE alcCaptureCloseDevice;
+extern LPALCCAPTURESTART alcCaptureStart;
+extern LPALCCAPTURESTOP alcCaptureStop;
+extern LPALCCAPTURESAMPLES alcCaptureSamples;
+
+//ALC extensions
+//ALC_EXT_thread_local_context
+extern PFNALCSETTHREADCONTEXTPROC alcSetThreadContext;
+extern PFNALCGETTHREADCONTEXTPROC alcGetThreadContext;
+//ALC_SOFT_loopback
+extern LPALCLOOPBACKOPENDEVICESOFT alcLoopbackOpenDeviceSOFT;
+extern LPALCISRENDERFORMATSUPPORTEDSOFT alcIsRenderFormatSupportedSOFT;
+extern LPALCRENDERSAMPLESSOFT alcRenderSamplesSOFT;
+//ALC_SOFT_pause_device
+extern LPALCDEVICEPAUSESOFT alcDevicePauseSOFT;
+extern LPALCDEVICERESUMESOFT alcDeviceResumeSOFT;
+//ALC_SOFT_HRTF
+extern LPALCGETSTRINGISOFT alcGetStringiSOFT;
+extern LPALCRESETDEVICESOFT alcResetDeviceSOFT;
+//ALC_SOFT_device_clock
+extern LPALCGETINTEGER64VSOFT alcGetInteger64vSOFT;
+//ALC_SOFT_reopen_device
+extern LPALCREOPENDEVICESOFT alcReopenDeviceSOFT;
+
+#endif
