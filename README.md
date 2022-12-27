@@ -34,7 +34,7 @@ Update ALC pointers to those loaded with a specific ALCdevice with
 
         aladUpdateALCPointers(device);
 
-If you want to remove this reference to the device, reload them to the nonspecific pointers by calling "aladLoadAL" again.
+If you want to remove this reference to the device, reload them to the nonspecific pointers by calling "aladLoadAL" again, or by calling "aladUpdateALCPointers(NULL);"
 
 Unload the library loaded with default initalization with
 
