@@ -7,6 +7,12 @@ Usage:
 Include the single header
 
         #include "alad.h"
+        
+once with
+
+        #define ALAD_IMPLEMENTATION
+
+to define the functions and global function pointers, and include the header without this symbol defined in all other translation units.
 
 This will pull in all OpenAL symbols except the functions. Initalize those with
 
