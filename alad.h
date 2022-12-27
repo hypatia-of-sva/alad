@@ -3,11 +3,11 @@
  * 
  *  Usage:
  *
- *  Include once with
+ *  Include this file once with
  *
  *          #define ALAD_IMPLEMENTATION
  *
- *  to define the functions and global function pointers, and without that in all other translation units.
+ *  to define the functions and global function pointers, and include this file without this symbol defined in all other translation units.
  * 
  *  This header loads in all OpenAL symbols except the functions. 
  *  Initalize those with
