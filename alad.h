@@ -69,9 +69,6 @@
 #if !(defined(ALAD_H)) && !(defined(AL_AL_H)) && !(defined(AL_ALC_H)) && !(defined(AL_ALEXT_H)) && !(defined(AL_EFX_H)) && !(defined(EFX_PRESETS_H))
 #define ALAD_H
 
-//for NULL
-#include <stdlib.h>
-
 //we don't want to include the actual headers, so we define the header guards
 #define AL_AL_H
 #define AL_ALC_H
