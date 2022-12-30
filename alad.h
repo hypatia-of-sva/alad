@@ -52,12 +52,13 @@
  *
  *  If you're unsure about loading with a function loader, intialize with
  *
- *          aladLoadALContextFree();
+ *          aladLoadALContextFree(AL_FALSE);
  *
  *  to load function pointers directly from the shared library. This only works for default initialization.
  *  This will however not load all function pointers, but only those necessary to create a context.
  *  Those are the core ALC functions and all Core AL functions not relating to buffers, listeners, sources,
  *  and also not alDopplerFactor, alDopplerVelocity, alSpeedOfSound and alDistanceModel.
+ *  However, if you change the parameter to anything else (AL_TRUE makes the most sense), all core AL and ALC functions will be loaded frp, the shared library.
  *
  *  If you want to use your own library, not available in default initialization, and want to load directly from it, you need to write a wrapper of type
  *  LPALGETPROCADDRESS of the form my_alGetProcAddress("[al-function]") = dlsym(my_lib, "[al-function]"). aladLoadALContextFree is not used here.
@@ -1565,7 +1566,7 @@ _alad_proc _alad_load(void* module, const char* name);
 void _alad_close(void* module);
 
 
-void _alad_load_al_functions_contextfree_dlsym(void* module) {
+void _alad_load_al_functions_contextfree_dlsym(void* module, ALboolean loadAll) {
     if(module == NULL) return;
     //Core AL functions without buffer, source, listener and doppler/distance functions, because none of these are necessary to create a context
     alGetProcAddress                = _alad_load(module, "alGetProcAddress");
@@ -1584,6 +1585,66 @@ void _alad_load_al_functions_contextfree_dlsym(void* module) {
     alGetError                      = _alad_load(module, "alGetError");
     alIsExtensionPresent            = _alad_load(module, "alIsExtensionPresent");
     alGetEnumValue                  = _alad_load(module, "alGetEnumValue");
+    //the rest if wanted
+    if(loadAll != AL_FALSE) {
+        alDopplerFactor                 = _alad_load(module, "alDopplerFactor");
+        alDopplerVelocity               = _alad_load(module, "alDopplerVelocity");
+        alSpeedOfSound                  = _alad_load(module, "alSpeedOfSound");
+        alDistanceModel                 = _alad_load(module, "alDistanceModel");
+        alListenerf                     = _alad_load(module, "alListenerf");
+        alListener3f                    = _alad_load(module, "alListener3f");
+        alListenerfv                    = _alad_load(module, "alListenerfv");
+        alListeneri                     = _alad_load(module, "alListeneri");
+        alListener3i                    = _alad_load(module, "alListener3i");
+        alListeneriv                    = _alad_load(module, "alListeneriv");
+        alGetListenerf                  = _alad_load(module, "alGetListenerf");
+        alGetListener3f                 = _alad_load(module, "alGetListener3f");
+        alGetListenerfv                 = _alad_load(module, "alGetListenerfv");
+        alGetListeneri                  = _alad_load(module, "alGetListeneri");
+        alGetListener3i                 = _alad_load(module, "alGetListener3i");
+        alGetListeneriv                 = _alad_load(module, "alGetListeneriv");
+        alGenSources                    = _alad_load(module, "alGenSources");
+        alDeleteSources                 = _alad_load(module, "alDeleteSources");
+        alIsSource                      = _alad_load(module, "alIsSource");
+        alSourcef                       = _alad_load(module, "alSourcef");
+        alSource3f                      = _alad_load(module, "alSource3f");
+        alSourcefv                      = _alad_load(module, "alSourcefv");
+        alSourcei                       = _alad_load(module, "alSourcei");
+        alSource3i                      = _alad_load(module, "alSource3i");
+        alSourceiv                      = _alad_load(module, "alSourceiv");
+        alGetSourcef                    = _alad_load(module, "alGetSourcef");
+        alGetSource3f                   = _alad_load(module, "alGetSource3f");
+        alGetSourcefv                   = _alad_load(module, "alGetSourcefv");
+        alGetSourcei                    = _alad_load(module, "alGetSourcei");
+        alGetSource3i                   = _alad_load(module, "alGetSource3i");
+        alGetSourceiv                   = _alad_load(module, "alGetSourceiv");
+        alSourcePlayv                   = _alad_load(module, "alSourcePlayv");
+        alSourceStopv                   = _alad_load(module, "alSourceStopv");
+        alSourceRewindv                 = _alad_load(module, "alSourceRewindv");
+        alSourcePausev                  = _alad_load(module, "alSourcePausev");
+        alSourcePlay                    = _alad_load(module, "alSourcePlay");
+        alSourceStop                    = _alad_load(module, "alSourceStop");
+        alSourceRewind                  = _alad_load(module, "alSourceRewind");
+        alSourcePause                   = _alad_load(module, "alSourcePause");
+        alSourceQueueBuffers            = _alad_load(module, "alSourceQueueBuffers");
+        alSourceUnqueueBuffers          = _alad_load(module, "alSourceUnqueueBuffers");
+        alGenBuffers                    = _alad_load(module, "alGenBuffers");
+        alDeleteBuffers                 = _alad_load(module, "alDeleteBuffers");
+        alIsBuffer                      = _alad_load(module, "alIsBuffer");
+        alBufferData                    = _alad_load(module, "alBufferData");
+        alBufferf                       = _alad_load(module, "alBufferf");
+        alBuffer3f                      = _alad_load(module, "alBuffer3f");
+        alBufferfv                      = _alad_load(module, "alBufferfv");
+        alBufferi                       = _alad_load(module, "alBufferi");
+        alBuffer3i                      = _alad_load(module, "alBuffer3i");
+        alBufferiv                      = _alad_load(module, "alBufferiv");
+        alGetBufferf                    = _alad_load(module, "alGetBufferf");
+        alGetBuffer3f                   = _alad_load(module, "alGetBuffer3f");
+        alGetBufferfv                   = _alad_load(module, "alGetBufferfv");
+        alGetBufferi                    = _alad_load(module, "alGetBufferi");
+        alGetBuffer3i                   = _alad_load(module, "alGetBuffer3i");
+        alGetBufferiv                   = _alad_load(module, "alGetBufferiv");
+    }
 }
 
 void _alad_load_al_functions() {
@@ -1951,9 +2012,9 @@ void _alad_unload_lib() {
 
 
 //manual interface
-void aladLoadALContextFree() {
+void aladLoadALContextFree(ALboolean loadAll) {
     _alad_load_lib();
-    _alad_load_al_functions_contextfree_dlsym(_alad_module);
+    _alad_load_al_functions_contextfree_dlsym(_alad_module, loadALL);
     _alad_load_alc_functions_contextfree_dlsym(_alad_module);
 }
 
@@ -2014,7 +2075,7 @@ void aladTerminate() {
 
 //simplified Interface
 void aladLoadAL() {
-    aladLoadALContextFree();
+    aladLoadALContextFree(AL_TRUE);
 }
 void aladUpdateAL() {
     //load extensions with alGetProcAddress
@@ -2032,7 +2093,7 @@ extern void aladLoadAL();
 extern void aladUpdateAL();
 
 //manual interface
-extern void aladLoadALContextFree();
+extern void aladLoadALContextFree(ALboolean loadAll);
 extern void aladLoadALFromLoaderFunction(LPALGETPROCADDRESS inital_loader);
 extern void aladUpdateALPointers(ALCcontext* context, ALboolean extensionsOnly);
 extern void aladUpdateALCPointersFromContext(ALCcontext* context, ALboolean extensionsOnly);
