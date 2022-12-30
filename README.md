@@ -42,7 +42,9 @@ and also not alDopplerFactor, alDopplerVelocity, alSpeedOfSound and alDistanceMo
 
 If you want to use your own library, not available in default initialization, and want to load directly from it, you need to write a wrapper of type
 LPALGETPROCADDRESS of the form
+
         my_alGetProcAddress("[al-function]") = dlsym(my_lib, "[al-function]").
+        
 aladLoadALContextFree is not used here.
 
 These aladLoad functions only initialize the Core API. To load the extensions you have to update the function pointers.
