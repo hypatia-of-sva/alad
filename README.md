@@ -22,13 +22,45 @@ for default initialization, or with
 
         aladLoadAL(my_alGetProcAddress);
 
-where my_alGetProcAddress is a loader function of type LPALGETPROCADDRESS for custom initalization.
+where my_alGetProcAddress is a loader function of type LPALGETPROCADDRESS for custom initalization, to load all the function via alGetProcAddress.
 
 Default initialization will pull in "OpenAL32.dll" or "soft_oal.dll" on Windows and "libopenal.so" or "libopenal.so.1" on Unix respectively.
 
 Make sure one of these dynamic libraries are on path for LoadLibraryA / dlopen, change the code in the internal function "_alad_open" or provide your own function loader.
 
-The Library will only be initalized once, you can call "aladLoadAL(NULL)" as often as you want to reload the pointer from the loaded shared library.
+The shared library will only be loaded once, you can call "aladLoadAL(NULL)" as often as you want to reload the pointers from the loaded shared library.
+
+
+If you're unsure about loading with a function loader, intialize with
+
+        aladLoadALContextFree();
+
+to load function pointers directly from the shared library. This only works for default initialization.
+This will however not load all function pointers, but only those necessary to create a context.
+Those are the core ALC functions and all Core AL functions not relating to buffers, listeners, sources,
+and also not alDopplerFactor, alDopplerVelocity, alSpeedOfSound and alDistanceModel.
+
+If you want to use your own library, not available in default initialization, and want to load directly from it, you need to write a wrapper of type
+LPALGETPROCADDRESS of the form my_alGetProcAddress("[al-function]") = dlsym(my_lib, "[al-function]"). aladLoadALContextFree is not used here.
+
+These aladLoad functions only initialize the Core API. To load the extensions you have to update the function pointers.
+
+You can update those via the ALCcontext* context through
+
+        aladUpdateALPointers(context);
+        aladUpdateALCPointersFromContext(context);
+
+which will load all AL and ALC functions, including extensions, via alGetProcAddress for the specific context.
+
+Update ALC pointers to those loaded with a specific ALCdevice with
+
+        aladUpdateALCPointersFromDevice(device);
+
+If you want to remove this reference to the device, reload them to the nonspecific pointers by calling "aladUpdateALCPointersFromContext" again.
+or by calling "aladLoadALContextFree()" if you need them without reference to any context.
+Calling "aladLoadAL" again won't do anything different from "aladUpdateALCPointersFromContext",
+since both call alGetProcAddress and are therefore just dependent on driver state.
+
 
 Update ALC pointers to those loaded with a specific ALCdevice with
 
