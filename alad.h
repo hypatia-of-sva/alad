@@ -1514,6 +1514,34 @@ LPALCREOPENDEVICESOFT alcReopenDeviceSOFT = NULL;
 
 
 
+//implemented down below
+typedef void (*_alad_proc)(void);
+void* _alad_open(const char* path);
+_alad_proc _alad_load(void* module, const char* name);
+void _alad_close(void* module);
+
+
+void _alad_load_al_functions_contextfree_dlsym(void* module) {
+    if(module == NULL) return;
+    //Core AL functions without buffer, source, listener and doppler/distance functions, because none of these are necessary to create a context
+    alGetProcAddress                = _alad_load(module, "alGetProcAddress");
+    alEnable                        = _alad_load(module, "alEnable");
+    alDisable                       = _alad_load(module, "alDisable");
+    alIsEnabled                     = _alad_load(module, "alIsEnabled");
+    alGetString                     = _alad_load(module, "alGetString");
+    alGetBooleanv                   = _alad_load(module, "alGetBooleanv");
+    alGetIntegerv                   = _alad_load(module, "alGetIntegerv");
+    alGetFloatv                     = _alad_load(module, "alGetFloatv");
+    alGetDoublev                    = _alad_load(module, "alGetDoublev");
+    alGetBoolean                    = _alad_load(module, "alGetBoolean");
+    alGetInteger                    = _alad_load(module, "alGetInteger");
+    alGetFloat                      = _alad_load(module, "alGetFloat");
+    alGetDouble                     = _alad_load(module, "alGetDouble");
+    alGetError                      = _alad_load(module, "alGetError");
+    alIsExtensionPresent            = _alad_load(module, "alIsExtensionPresent");
+    alGetEnumValue                  = _alad_load(module, "alGetEnumValue");
+}
+
 void _alad_load_al_functions() {
     if(alGetProcAddress == NULL) return;
     //Core AL
@@ -1589,7 +1617,10 @@ void _alad_load_al_functions() {
     alGetBufferi                    = alGetProcAddress("alGetBufferi");
     alGetBuffer3i                   = alGetProcAddress("alGetBuffer3i");
     alGetBufferiv                   = alGetProcAddress("alGetBufferiv");
+}
 
+void _alad_load_al_extension_functions() {
+    if(alGetProcAddress == NULL) return;
     //EFX
     alGenEffects                    = alGetProcAddress("alGenEffects");
     alDeleteEffects                 = alGetProcAddress("alDeleteEffects");
@@ -1668,11 +1699,68 @@ void _alad_load_al_functions() {
     alGetBufferPtrvSOFT             = alGetProcAddress("alGetBufferPtrvSOFT");
 }
 
+
+
+void _alad_load_alc_functions_contextfree_dlsym(void* module) {
+    if(module == NULL) return;
+    //Core ALC
+    alcGetProcAddress               = _alad_load(module, "alcGetProcAddress");
+    alcCreateContext                = _alad_load(module, "alcCreateContext");
+    alcMakeContextCurrent           = _alad_load(module, "alcMakeContextCurrent");
+    alcProcessContext               = _alad_load(module, "alcProcessContext");
+    alcSuspendContext               = _alad_load(module, "alcSuspendContext");
+    alcDestroyContext               = _alad_load(module, "alcDestroyContext");
+    alcGetCurrentContext            = _alad_load(module, "alcGetCurrentContext");
+    alcGetContextsDevice            = _alad_load(module, "alcGetContextsDevice");
+    alcOpenDevice                   = _alad_load(module, "alcOpenDevice");
+    alcCloseDevice                  = _alad_load(module, "alcCloseDevice");
+    alcGetError                     = _alad_load(module, "alcGetError");
+    alcIsExtensionPresent           = _alad_load(module, "alcIsExtensionPresent");
+    alcGetEnumValue                 = _alad_load(module, "alcGetEnumValue");
+    alcGetString                    = _alad_load(module, "alcGetString");
+    alcGetIntegerv                  = _alad_load(module, "alcGetIntegerv");
+    alcCaptureOpenDevice            = _alad_load(module, "alcCaptureOpenDevice");
+    alcCaptureCloseDevice           = _alad_load(module, "alcCaptureCloseDevice");
+    alcCaptureStart                 = _alad_load(module, "alcCaptureStart");
+    alcCaptureStop                  = _alad_load(module, "alcCaptureStop");
+    alcCaptureSamples               = _alad_load(module, "alcCaptureSamples");
+}
+
+
+void _alad_load_alc_functions_from_al() {
+    if(alGetProcAddress == NULL) return;
+    //Core ALC
+    alcGetProcAddress               = alGetProcAddress("alcGetProcAddress");
+    alcCreateContext                = alGetProcAddress("alcCreateContext");
+    alcMakeContextCurrent           = alGetProcAddress("alcMakeContextCurrent");
+    alcProcessContext               = alGetProcAddress("alcProcessContext");
+    alcSuspendContext               = alGetProcAddress("alcSuspendContext");
+    alcDestroyContext               = alGetProcAddress("alcDestroyContext");
+    alcGetCurrentContext            = alGetProcAddress("alcGetCurrentContext");
+    alcGetContextsDevice            = alGetProcAddress("alcGetContextsDevice");
+    alcOpenDevice                   = alGetProcAddress("alcOpenDevice");
+    alcCloseDevice                  = alGetProcAddress("alcCloseDevice");
+    alcGetError                     = alGetProcAddress("alcGetError");
+    alcIsExtensionPresent           = alGetProcAddress("alcIsExtensionPresent");
+    alcGetEnumValue                 = alGetProcAddress("alcGetEnumValue");
+    alcGetString                    = alGetProcAddress("alcGetString");
+    alcGetIntegerv                  = alGetProcAddress("alcGetIntegerv");
+    alcCaptureOpenDevice            = alGetProcAddress("alcCaptureOpenDevice");
+    alcCaptureCloseDevice           = alGetProcAddress("alcCaptureCloseDevice");
+    alcCaptureStart                 = alGetProcAddress("alcCaptureStart");
+    alcCaptureStop                  = alGetProcAddress("alcCaptureStop");
+    alcCaptureSamples               = alGetProcAddress("alcCaptureSamples");
+}
+
 void _alad_load_alc_functions(ALCdevice *device) {
+    //old loader code left for future use
+    /*
     if((alGetProcAddress == NULL) && (alcGetProcAddress == NULL)) return;
     if(alcGetProcAddress == NULL) {
         alcGetProcAddress = alGetProcAddress("alcGetProcAddress");
     }
+    */
+    if(alcGetProcAddress == NULL) return;
     //Core ALC
     alcCreateContext                = alcGetProcAddress(device, "alcCreateContext");
     alcMakeContextCurrent           = alcGetProcAddress(device, "alcMakeContextCurrent");
@@ -1693,6 +1781,10 @@ void _alad_load_alc_functions(ALCdevice *device) {
     alcCaptureStart                 = alcGetProcAddress(device, "alcCaptureStart");
     alcCaptureStop                  = alcGetProcAddress(device, "alcCaptureStop");
     alcCaptureSamples               = alcGetProcAddress(device, "alcCaptureSamples");
+}
+
+void _alad_load_alc_extension_functions(ALCdevice *device) {
+    if(alcGetProcAddress == NULL) return;
     //ALC extensions
     //ALC_EXT_thread_local_context
     alcSetThreadContext             = alcGetProcAddress(device, "alcSetThreadContext");
@@ -1718,11 +1810,6 @@ void _alad_load_alc_functions(ALCdevice *device) {
 
 
 
-typedef void (*_alad_proc)(void);
-
-void* _alad_open(const char* path);
-_alad_proc _alad_load(void* module, const char* name);
-void _alad_close(void* module);
 
 //modelled after GLFW, see win32_module.c and posix_module.c specifically
 #if defined(_WIN32) || defined(__WIN32__) || defined(WIN32) || defined(__MINGW32__)
@@ -1769,22 +1856,32 @@ void _alad_close(void* module);
 
 void* _alad_module = NULL;
 
-LPALGETPROCADDRESS _alad_initalloader() {
+void _alad_load_lib() {
     _alad_module = _alad_open(_alad_LIB_NAME);
     if(_alad_module == NULL) {
         _alad_module = _alad_open(_alad_SECONDARY_LIB_NAME);
-        if(_alad_module == NULL) {
-            return NULL;
-        }
+    }
+}
+
+LPALGETPROCADDRESS _alad_initalloader() {
+    _alad_load_lib();
+    if(_alad_module == NULL) {
+        return NULL;
     }
     return (LPALGETPROCADDRESS) _alad_load(_alad_module, "alGetProcAddress");
 }
+
 void _alad_unload_lib() {
     if(_alad_module != NULL) _alad_close(_alad_module);
 }
 
 
 
+void aladLoadALContextFree() {
+    _alad_load_lib();
+    _alad_load_al_functions_contextfree_dlsym(_alad_module);
+    _alad_load_alc_functions_contextfree_dlsym(_alad_module);
+}
 
 void aladLoadAL(LPALGETPROCADDRESS inital_loader) {
     if(inital_loader != NULL) {
@@ -1793,11 +1890,18 @@ void aladLoadAL(LPALGETPROCADDRESS inital_loader) {
         alGetProcAddress = _alad_initalloader();
     }
     _alad_load_al_functions();
-    _alad_load_alc_functions(NULL);
+    _alad_load_alc_functions_from_al();
+}
+
+
+void aladUpdateALPointers(ALCcontext* context) {
+    _alad_load_al_functions();
+    _alad_load_al_extension_functions();
 }
 
 void aladUpdateALCPointers(ALCdevice *device) {
     _alad_load_alc_functions(device);
+    _alad_load_alc_extension_functions(device);
 }
 
 void aladTerminate() {
@@ -1808,7 +1912,9 @@ void aladTerminate() {
 #else // that is when !defined(ALAD_IMPLEMENTATION)
 
 
+extern void aladLoadALContextFree();
 extern void aladLoadAL(LPALGETPROCADDRESS inital_loader);
+extern void aladUpdateALPointers(ALCcontext* context);
 extern void aladUpdateALCPointers(ALCdevice *device);
 extern void aladTerminate();
 
