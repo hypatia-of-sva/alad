@@ -1,6 +1,10 @@
 # alad
 
+### Overview
+
 alad is a [glad](https://github.com/Dav1dde/glad)-like, header-only C99 [OpenAL](http://www.openal.org/)-loader library by Hypatia of Sva
+
+Dependencies for compilation: Kernel32.dll on Windows and -ldl on Unix for the default initialization.
 
 Usage:
 
@@ -18,6 +22,7 @@ This will pull in all OpenAL symbols except the functions.
 
 There are two interfaces to initialize the API, the (recomended) simplified interface and the manual interface, that gives you more options. 
 
+### Simplified Interface
 
 The simplified interface initializes the library first with
 
@@ -39,7 +44,7 @@ The library should be named
 
 
 
-Manual interface (not recommended):
+### Manual interface (not recommended)
 
 The manual interface initializes the function pointers first with
 
@@ -109,6 +114,5 @@ alad will attempt to load all function pointers in all extensions as currently d
 The ALC_INVALID_VALUE-Error-State of alcGetProcAddress is not being checked.
 If a functionality you expect to be present isn't working, you might want to check the spelling of the strings in the internal "_alad_load_alc_functions" function.
 
-Dependencies for compilation: Kernel32.dll on Windows and -ldl on Unix for the default initialization.
 
 
