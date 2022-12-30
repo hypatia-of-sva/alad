@@ -42,6 +42,7 @@ The library should be named
 - OpenAL32.dll / soft_oal.dll on Windows
 - libopenal.so.1 / libopenal.so on Linux/BSD
 - libopenal.1.dylib / libopenal.dylib on Mac OS.
+
 and should be on path for LoadLibraryA / dlopen.
 
 alad will attempt to load all function pointers in all extensions as currently described in the [openal-soft](https://github.com/kcat/openal-soft) headers (repo version from 24.12.2022, commit https://github.com/kcat/openal-soft/commit/4fe6eba8c79a4c9cad91d6f6835506cde96a48c4), the ones not available will be NULL, you have to check all functions you want to use for that.
