@@ -2014,7 +2014,7 @@ void _alad_unload_lib() {
 //manual interface
 void aladLoadALContextFree(ALboolean loadAll) {
     _alad_load_lib();
-    _alad_load_al_functions_contextfree_dlsym(_alad_module, loadALL);
+    _alad_load_al_functions_contextfree_dlsym(_alad_module, loadAll);
     _alad_load_alc_functions_contextfree_dlsym(_alad_module);
 }
 
@@ -2030,9 +2030,10 @@ void aladLoadALFromLoaderFunction(LPALGETPROCADDRESS inital_loader) {
 
 
 void aladUpdateALPointers(ALCcontext* context, ALboolean extensionsOnly) {
-    bool switchContext = (context != NULL);
+    ALboolean switchContext = (context != NULL);
+    ALCcontext* oldContext;
     if(switchContext) {
-        ALCcontext* oldContext = alcGetCurrentContext();
+        oldContext = alcGetCurrentContext();
         alcMakeContextCurrent(context);
     }
     if(extensionsOnly == AL_FALSE) {
@@ -2045,9 +2046,10 @@ void aladUpdateALPointers(ALCcontext* context, ALboolean extensionsOnly) {
 }
 
 void aladUpdateALCPointersFromContext(ALCcontext* context, ALboolean extensionsOnly) {
-    bool switchContext = (context != NULL);
+    ALboolean switchContext = (context != NULL);
+    ALCcontext* oldContext;
     if(switchContext) {
-        ALCcontext* oldContext = alcGetCurrentContext();
+        oldContext = alcGetCurrentContext();
         alcMakeContextCurrent(context);
     }
     if(extensionsOnly == AL_FALSE) {
