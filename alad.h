@@ -26,7 +26,10 @@
  *          aladTerminate();
  *  
  *  this will unload the shared library.
- *  The library should be named OpenAL32.dll / soft_oal.dll on Windows or libopenal.so.1 / libopenal.so on Unix respectively, and libopenal.1.dylib / libopenal.dylib on Mac OS.
+ *  The library should be named
+ *      - OpenAL32.dll / soft_oal.dll on Windows
+ *      - libopenal.so.1 / libopenal.so on Linux/BSD
+ *      - libopenal.1.dylib / libopenal.dylib on Mac OS.
  *  
  *
  *  Manual interface (not recommended):
@@ -41,7 +44,8 @@
  * 
  *  where my_alGetProcAddress is a loader function of type LPALGETPROCADDRESS for custom initalization, to load all the function via alGetProcAddress.
  *
- *  Default initialization will pull in OpenAL32.dll / soft_oal.dll on Windows or libopenal.so.1 / libopenal.so on Unix respectively, and libopenal.1.dylib / libopenal.dylib on Mac OS.
+ *  Default initialization will pull in OpenAL32.dll / soft_oal.dll on Windows or libopenal.so.1 / libopenal.so on Unix respectively,
+ *  and libopenal.1.dylib / libopenal.dylib on Mac OS (yet untested).
  *  Make sure one of these dynamic libraries are on path for LoadLibraryA / dlopen, change the code below in _alad_open or provide your own function loader.
  *  The shared library will only be loaded once, you can call "aladLoadALFromLoaderFunction(NULL)" as often as you want to reload the pointers from the loaded shared library.
  *
@@ -66,7 +70,8 @@
  *
  *  which will load all AL and ALC functions, including extensions, via alGetProcAddress for the specific context
  *  by switching the current context temporarily. It will just use the current context, if the parameter is NULL.
- *  If you replace AL_FALSE with anything else (AL_TRUE makes the most sense) this will only load the extensions, and the core function pointers will remain unchanged
+ *  If you replace AL_FALSE with anything else (AL_TRUE makes the most sense) this will only load the extensions,
+ *  and the core function pointers will remain unchanged
  *
  *  Update ALC pointers to those loaded with a specific ALCdevice* device with
  * 
