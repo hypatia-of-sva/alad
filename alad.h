@@ -22,7 +22,7 @@
  *
  *  Default initialization will pull in OpenAL32.dll / soft_oal.dll on Windows or libopenal.so / libopenal.so.1 on Unix respectively.
  *  Make sure one of these dynamic libraries are on path for LoadLibraryA / dlopen, change the code below in _alad_open or provide your own function loader.
- *  The shared library will only be loaded once, you can call "aladLoadAL(NULL)" as often as you want to reload the pointer from the loaded shared library.
+ *  The shared library will only be loaded once, you can call "aladLoadAL(NULL)" as often as you want to reload the pointers from the loaded shared library.
  *
  *  If you're unsure about loading with a function loader, intialize with
  *
