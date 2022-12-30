@@ -38,6 +38,7 @@ which will load all extensions with the current context and its device. Once you
 
 this will unload the shared library.
 The library should be named
+
     - OpenAL32.dll / soft_oal.dll on Windows
     - libopenal.so.1 / libopenal.so on Linux/BSD
     - libopenal.1.dylib / libopenal.dylib on Mac OS.
