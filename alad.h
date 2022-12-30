@@ -30,7 +30,8 @@
  *
  *  to load function pointers directly from the shared library. This only works for default initialization.
  *  This will however not load all function pointers, but only those necessary to create a context.
- *  Those are the core ALC functions and all Core AL functions not relating to buffers, listeners, sources, and also not alDopplerFactor, alDopplerVelocity, alSpeedOfSound and alDistanceModel.
+ *  Those are the core ALC functions and all Core AL functions not relating to buffers, listeners, sources,
+ *  and also not alDopplerFactor, alDopplerVelocity, alSpeedOfSound and alDistanceModel.
  *
  *  If you want to use your own library, not available in default initialization, and want to load directly from it, you need to write a wrapper of type
  *  LPALGETPROCADDRESS of the form my_alGetProcAddress("[al-function]") = dlsym(my_lib, "[al-function]"). aladLoadALContextFree is not used here.
@@ -50,7 +51,8 @@
  *
  *  If you want to remove this reference to the device, reload them to the nonspecific pointers by calling "aladUpdateALCPointersFromContext" again.
  *  or by calling "aladLoadALContextFree()" if you need them without reference to any context.
- *  Calling "aladLoadAL" again won't do anything different from "aladUpdateALCPointersFromContext", since both call alGetProcAddress and are therefore just dependent on driver state.
+ *  Calling "aladLoadAL" again won't do anything different from "aladUpdateALCPointersFromContext",
+ *  since both call alGetProcAddress and are therefore just dependent on driver state.
  * 
  *  Unload the library loaded with default initalization with
  * 
