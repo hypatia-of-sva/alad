@@ -1752,8 +1752,17 @@ void _alad_close(void* module);
     void _alad_close(void* module) {
         dlclose(module);
     }
-#define _alad_LIB_NAME "libopenal.so"
-#define _alad_SECONDARY_LIB_NAME "libopenal.so.1"
+
+//there are also libopenal.so.1.[X].[Y] and libopenal.1.[X].[Y].dylib respectively, but it would be difficult to look all of those up
+#if defined(__APPLE__)
+//not tested myself; the only references I could find are https://github.com/ToweOPrO/sadsad and https://pastebin.com/MEmh3ZFr, which is at least tenuous
+#define _alad_LIB_NAME "libopenal.1.dylib"
+#define _alad_SECONDARY_LIB_NAME "libopenal.dylib"
+#else
+#define _alad_LIB_NAME "libopenal.so.1"
+#define _alad_SECONDARY_LIB_NAME "libopenal.so"
+#endif
+
 #endif /* _WIN32 */
 
 
