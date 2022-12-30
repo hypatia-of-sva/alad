@@ -9,20 +9,41 @@
  *
  *  to define the functions and global function pointers, and include this file without this symbol defined in all other translation units.
  * 
- *  This header loads in all OpenAL symbols except the functions. 
- *  Initalize those with
+ *  This header loads in all OpenAL symbols except the functions.
+ *
+ *  There are two interfaces to initialize the API, the (recomended) simplified interface and the manual interface, that gives you more options. 
+ *
+ *  The simplified interface initializes the library first with
+ *  
+ *          aladLoadAL();
+ *  
+ *  which loads in all the core functions from the shared library. This should be enough to select a device and create a context. Once you've done that, call
+ *
+ *          aladUpdateAL();
+ *
+ *  which will load all extensions with the current context and its device. Once you've done, terminate the library with
+ *
+ *          aladTerminate();
+ *  
+ *  this will unload the shared library.
+ *  The library should be named OpenAL32.dll / soft_oal.dll on Windows or libopenal.so.1 / libopenal.so on Unix respectively, and libopenal.1.dylib / libopenal.dylib on Mac OS.
+ *  
+ *
+ *  Manual interface (not recommended):
+ *
+ *  The manual interface initializes the function pointers first with
  * 
- *          aladLoadAL(NULL);
+ *          aladLoadALFromLoaderFunction(NULL);
  * 
  *  for default initialization, or with
  * 
- *          aladLoadAL(my_alGetProcAddress);
+ *          aladLoadALFromLoaderFunction(my_alGetProcAddress);
  * 
  *  where my_alGetProcAddress is a loader function of type LPALGETPROCADDRESS for custom initalization, to load all the function via alGetProcAddress.
  *
- *  Default initialization will pull in OpenAL32.dll / soft_oal.dll on Windows or libopenal.so / libopenal.so.1 on Unix respectively.
+ *  Default initialization will pull in OpenAL32.dll / soft_oal.dll on Windows or libopenal.so.1 / libopenal.so on Unix respectively, and libopenal.1.dylib / libopenal.dylib on Mac OS.
  *  Make sure one of these dynamic libraries are on path for LoadLibraryA / dlopen, change the code below in _alad_open or provide your own function loader.
- *  The shared library will only be loaded once, you can call "aladLoadAL(NULL)" as often as you want to reload the pointers from the loaded shared library.
+ *  The shared library will only be loaded once, you can call "aladLoadALFromLoaderFunction(NULL)" as often as you want to reload the pointers from the loaded shared library.
  *
  *  If you're unsure about loading with a function loader, intialize with
  *
@@ -40,19 +61,22 @@
  *
  *  You can update those via the ALCcontext* context through
  *
- *          aladUpdateALPointers(context);
- *          aladUpdateALCPointersFromContext(context);
+ *          aladUpdateALPointers(context, AL_FALSE);
+ *          aladUpdateALCPointersFromContext(context, AL_FALSE);
  *
- *  which will load all AL and ALC functions, including extensions, via alGetProcAddress for the specific context.
+ *  which will load all AL and ALC functions, including extensions, via alGetProcAddress for the specific context
+ *  by switching the current context temporarily. It will just use the current context, if the parameter is NULL.
+ *  If you replace AL_FALSE with anything else (AL_TRUE makes the most sense) this will only load the extensions, and the core function pointers will remain unchanged
  *
  *  Update ALC pointers to those loaded with a specific ALCdevice* device with
  * 
- *          aladUpdateALCPointersFromDevice(device);
+ *          aladUpdateALCPointersFromDevice(device, AL_FALSE);
  *
  *  If you want to remove this reference to the device, reload them to the nonspecific pointers by calling "aladUpdateALCPointersFromContext" again.
  *  or by calling "aladLoadALContextFree()" if you need them without reference to any context.
- *  Calling "aladLoadAL" again won't do anything different from "aladUpdateALCPointersFromContext",
+ *  Calling "aladLoadALFromLoaderFunction" again won't do anything different from "aladUpdateALCPointersFromContext",
  *  since both call alGetProcAddress and are therefore just dependent on driver state.
+ *  The last parameter again makes sure to reload the core, change the value to disable that.
  * 
  *  Unload the library loaded with default initalization with
  * 
@@ -69,6 +93,9 @@
  *          strings in the internal _alad_load_alc_functions function.
  * 
  */
+extern void aladUpdateALPointers(ALCcontext* context, bool extensionsOnly);
+extern void aladUpdateALCPointersFromContext(ALCcontext* context, bool extensionsOnly);
+extern void aladUpdateALCPointersFromDevice(ALCdevice *device, bool extensionsOnly);
 
 
 #pragma once
@@ -1917,13 +1944,14 @@ void _alad_unload_lib() {
 
 
 
+//manual interface
 void aladLoadALContextFree() {
     _alad_load_lib();
     _alad_load_al_functions_contextfree_dlsym(_alad_module);
     _alad_load_alc_functions_contextfree_dlsym(_alad_module);
 }
 
-void aladLoadAL(LPALGETPROCADDRESS inital_loader) {
+void aladLoadALFromLoaderFunction(LPALGETPROCADDRESS inital_loader) {
     if(inital_loader != NULL) {
         alGetProcAddress = inital_loader;
     } else if (alGetProcAddress == NULL)  {
@@ -1934,34 +1962,77 @@ void aladLoadAL(LPALGETPROCADDRESS inital_loader) {
 }
 
 
-void aladUpdateALPointers(ALCcontext* context) {
-    _alad_load_al_functions();
+void aladUpdateALPointers(ALCcontext* context, ALboolean extensionsOnly) {
+    bool switchContext = (context != NULL);
+    if(switchContext) {
+        ALCcontext* oldContext = alcGetCurrentContext();
+        alcMakeContextCurrent(context);
+    }
+    if(extensionsOnly == AL_FALSE) {
+        _alad_load_al_functions();
+    }
     _alad_load_al_extension_functions();
+    if(switchContext) {
+        alcMakeContextCurrent(oldContext);
+    }
 }
 
-void aladUpdateALCPointersFromContext(ALCcontext* context) {
-    _alad_load_alc_functions_from_al();
+void aladUpdateALCPointersFromContext(ALCcontext* context, ALboolean extensionsOnly) {
+    bool switchContext = (context != NULL);
+    if(switchContext) {
+        ALCcontext* oldContext = alcGetCurrentContext();
+        alcMakeContextCurrent(context);
+    }
+    if(extensionsOnly == AL_FALSE) {
+        _alad_load_alc_functions_from_al();
+    }
     _alad_load_alc_extension_functions_from_al();
+    if(switchContext) {
+        alcMakeContextCurrent(oldContext);
+    }
 }
 
-void aladUpdateALCPointersFromDevice(ALCdevice *device) {
-    _alad_load_alc_functions(device);
+void aladUpdateALCPointersFromDevice(ALCdevice *device, ALboolean extensionsOnly) {
+    if(extensionsOnly == AL_FALSE) {
+        _alad_load_alc_functions(device);
+    }
     _alad_load_alc_extension_functions(device);
 }
 
 void aladTerminate() {
     _alad_unload_lib();
 }
+    
+
+
+
+//simplified Interface
+void aladLoadAL() {
+    aladLoadALContextFree();
+}
+void aladUpdateAL() {
+    //load extensions with alGetProcAddress
+    _alad_load_al_extension_functions();
+    //use current contexts device to load ALC extensions with alcGetProcAddress
+    ALCdevice *device = alcGetContextsDevice(alcGetCurrentContext());
+    _alad_load_alc_extension_functions(device);
+}
 
 
 #else // that is when !defined(ALAD_IMPLEMENTATION)
 
+//simplified Interface
+extern void aladLoadAL();
+extern void aladUpdateAL();
 
+//manual interface
 extern void aladLoadALContextFree();
-extern void aladLoadAL(LPALGETPROCADDRESS inital_loader);
-extern void aladUpdateALPointers(ALCcontext* context);
-extern void aladUpdateALCPointersFromContext(ALCcontext* context);
-extern void aladUpdateALCPointersFromDevice(ALCdevice *device);
+extern void aladLoadALFromLoaderFunction(LPALGETPROCADDRESS inital_loader);
+extern void aladUpdateALPointers(ALCcontext* context, ALboolean extensionsOnly);
+extern void aladUpdateALCPointersFromContext(ALCcontext* context, ALboolean extensionsOnly);
+extern void aladUpdateALCPointersFromDevice(ALCdevice *device, ALboolean extensionsOnly);
+
+//shared function
 extern void aladTerminate();
 
 //Core AL
