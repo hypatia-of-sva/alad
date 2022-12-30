@@ -45,7 +45,7 @@
  *
  *  which will load all AL and ALC functions, including extensions, via alGetProcAddress for the specific context.
  *
- *  Update ALC pointers to those loaded with a specific ALCdevice with
+ *  Update ALC pointers to those loaded with a specific ALCdevice* device with
  * 
  *          aladUpdateALCPointersFromDevice(device);
  *
