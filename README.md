@@ -59,17 +59,15 @@ Make sure one of these dynamic libraries are on path for LoadLibraryA / dlopen, 
 The shared library will only be loaded once, you can call "aladLoadALFromLoaderFunction(NULL)" as often as you want
 to reload the pointers from the loaded shared library.
 
-
-
-
 If you're unsure about loading with a function loader, intialize with
 
-        aladLoadALContextFree();
+        aladLoadALContextFree(AL_FALSE);
 
 to load function pointers directly from the shared library. This only works for default initialization.
 This will however not load all function pointers, but only those necessary to create a context.
 Those are the core ALC functions and all Core AL functions not relating to buffers, listeners, sources,
 and also not alDopplerFactor, alDopplerVelocity, alSpeedOfSound and alDistanceModel.
+However, if you change the parameter to anything else (like AL_TRUE), all core AL and ALC functions will be loaded frp, the shared library.
 
 If you want to use your own library, not available in default initialization, and want to load directly from it, you need to write a wrapper of type
 LPALGETPROCADDRESS of the form
