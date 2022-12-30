@@ -20,7 +20,7 @@ to define the functions and global function pointers, and include the header wit
 
 This will pull in all OpenAL symbols except the functions.
 
-There are two interfaces to initialize the API, the (recomended) simplified interface and the manual interface, that gives you more options. 
+There are two interfaces to initialize the API, the (recomended) simplified interface and the manual interface with more options. 
 
 ### Simplified Interface
 
