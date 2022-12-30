@@ -4,7 +4,7 @@
 
 alad is a [glad](https://github.com/Dav1dde/glad)-like, header-only C99 [OpenAL](http://www.openal.org/)-loader library by Hypatia of Sva
 
-Dependencies for compilation: Kernel32.dll on Windows and -ldl on Unix for the default initialization.
+Dependencies for compilation: Kernel32.dll on Windows and -ldl on Unix for loading DLLs / shared libraries.
 
 Usage:
 
