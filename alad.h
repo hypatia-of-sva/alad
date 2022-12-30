@@ -1741,8 +1741,8 @@ void _alad_load_alc_functions_contextfree_dlsym(void* module) {
 void _alad_load_alc_functions_from_al() {
     if(alGetProcAddress == NULL) return;
     //Only load function loader once, and only if not already loaded from shared library
-    if(alGetProcAddress == NULL) {
-        alcGetProcAddress               = alGetProcAddress("alcGetProcAddress");
+    if(alcGetProcAddress == NULL) {
+        alcGetProcAddress           = alGetProcAddress("alcGetProcAddress");
     }
     //Core ALC
     alcCreateContext                = alGetProcAddress("alcCreateContext");
