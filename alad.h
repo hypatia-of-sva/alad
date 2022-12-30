@@ -1892,7 +1892,7 @@ void* _alad_module = NULL;
 
 void _alad_load_lib() {
     //don't load shared object twice
-    if(_alad_module == NULL) return;
+    if(_alad_module != NULL) return;
     //use fallback so name
     _alad_module = _alad_open(_alad_LIB_NAME);
     if(_alad_module == NULL) {
