@@ -25,7 +25,9 @@
  *
  *          aladUpdateAL();
  *
- *  which will load all extensions with the current context and its device. Once you're done using OpenAL, terminate the library with
+ *  which will load all extensions with the current context and its device. If an extension is not present, its functions will be NULL, check for that.
+ *
+ *  Once you're done using OpenAL, terminate the library with
  *
  *          aladTerminate();
  *  
@@ -35,6 +37,8 @@
  *      - libopenal.so.1 / libopenal.so on Linux/BSD
  *      - libopenal.1.dylib / libopenal.dylib on Mac OS.
  *  and should be on path for LoadLibraryA / dlopen.
+ *
+ *
  *
  *  Manual interface (not recommended, only use for troubleshooting like debugging the DLL / shared object):
  *
