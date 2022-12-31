@@ -1,5 +1,5 @@
 /*
- *  alad - a glad-like header-only C99 OpenAL-loader by Hypatia of Sva. Look for the current version at https://github.com/hypatia-of-sva/alad
+ *  alad - a glad-like header-only C99 OpenAL-loader by Hypatia of Sva. Look for the current version at: https://github.com/hypatia-of-sva/alad
  *
  *  Dependencies for compilation:
  *      - Kernel32.dll on Windows and -ldl on Unix for loading DLLs / shared libraries.
