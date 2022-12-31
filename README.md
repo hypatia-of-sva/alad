@@ -36,7 +36,9 @@ which loads in all the core functions from the shared library. This should be en
 
         aladUpdateAL();
 
-which will load all extensions with the current context and its device. Once you're done using OpenAL, terminate the library with
+which will load all extensions with the current context and its device. If an extension is not present, its functions will be NULL, check for that.
+
+Once you're done using OpenAL, terminate the library with
 
         aladTerminate();
 
