@@ -18,7 +18,11 @@ once with
 
 to define the functions and global function pointers, and include the header without this symbol defined in all other translation units.
 
-This will pull in all OpenAL symbols except the functions.
+This will pull in all OpenAL symbols except the functions by loading in the AL headers with AL_NO_PROTOTYPES and ALC_NO_PROTOTYPES defined.
+In order for this to work, you need up to date header files, download them from the master branch of openal-soft:
+    https://github.com/kcat/openal-soft/tree/master/include.
+alad can't currently check on whether or not the headers work properly, but compilation will fail due to double definition.
+Keep that in mind if you have compilation issues and put those headers under <AL/alext.h> and <AL/efx-presets.h> (the others are included in alext.h).
 
 There are two interfaces to initialize the API, the (recomended) simplified interface and the manual interface with more options. 
 
