@@ -36,7 +36,7 @@
  *      - libopenal.1.dylib / libopenal.dylib on Mac OS.
  *  and should be on path for LoadLibraryA / dlopen.
  *
- *  Manual interface (not recommended):
+ *  Manual interface (not recommended, only use for troubleshooting like debugging the DLL / shared object):
  *
  *  The manual interface initializes the function pointers first with
  * 
