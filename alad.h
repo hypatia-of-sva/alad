@@ -9,7 +9,7 @@
  *
  *  to define the functions and global function pointers, and include this file without this symbol defined in all other translation units.
  * 
- *  This header loads in all OpenAL symbols except the functions by loading in the AL headers with AL_NO_PROTOTYPES and ALC_NO_PROTOTYPES defined.
+ *  This header loads in all OpenAL symbols except the functions, by loading in the AL headers with AL_NO_PROTOTYPES and ALC_NO_PROTOTYPES defined.
  *  In order for this to work, you need up to date header files, download them from the master branch of openal-soft:
  *      https://github.com/kcat/openal-soft/tree/master/include
  *  alad can't currently check on whether or not the headers work properly, but compilation will fail due to double definition.
