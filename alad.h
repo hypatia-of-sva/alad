@@ -25,7 +25,7 @@
  *
  *          aladUpdateAL();
  *
- *  which will load all extensions with the current context and its device. Once you've done, terminate the library with
+ *  which will load all extensions with the current context and its device. Once you're done using OpenAL, terminate the library with
  *
  *          aladTerminate();
  *  
