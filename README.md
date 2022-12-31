@@ -53,7 +53,7 @@ alad will attempt to load all function pointers in all extensions as currently d
 The ALC_INVALID_VALUE-Error-State of alcGetProcAddress is not being checked.
 
 
-### Manual interface (not recommended, only use for troubleshooting like debugging the shared library)
+### Manual interface (not recommended, only use for troubleshooting like debugging the DLL)
 
 The manual interface initializes the function pointers first with
 
