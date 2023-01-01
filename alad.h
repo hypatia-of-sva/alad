@@ -30,6 +30,9 @@
  *          aladUpdateAL();
  *
  *  which will load all extensions with the current context and its device. If an extension is not present, its functions will be NULL, check for that.
+ *  The ALC functions are only valid for the current context's device (and technically the AL functions also for the context). If you change the device,
+ *  call aladUpdateAL(); again. If you update the context, you can also do that, but most implementations of OpenAL will not differentiate between contexts
+ *  on the same device for functionality, although it is allowed by the specification.
  *
  *  Once you're done using OpenAL, terminate the library with
  *
