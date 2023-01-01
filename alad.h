@@ -344,9 +344,10 @@ _alad_proc _alad_load (void *module, const char *name);
 void       _alad_close (void *module);
 
         
-//ISO C compatibility types for warning: ISO C forbids conversion of object pointer to function pointer type [-Wpedantic]
+//ISO C compatibility types for GCC warning: ISO C forbids conversion of object pointer to function pointer type [-Wpedantic]
 typedef _alad_proc         (AL_APIENTRY *_ALAD_ISO_C_COMPAT_LPALGETPROCADDRESS)(const ALchar *fname);
 typedef _alad_proc         (ALC_APIENTRY *_ALAD_ISO_C_COMPAT_LPALCGETPROCADDRESS)(ALCdevice *device, const ALCchar *funcname);
+typedef _alad_proc         (ALC_APIENTRY *_ALAD_ISO_C_COMPAT_dlsym)(void *module, const char *name);
 
 void       _alad_load_al_functions_contextfree_dlsym (void *module, ALboolean loadAll) {
         if (module == NULL) return;
@@ -747,7 +748,8 @@ void *_alad_open (const char *path) {
         return dlopen (path, RTLD_LAZY | RTLD_LOCAL);
 }
 _alad_proc _alad_load (void *module, const char *name) {
-        return dlsym (module, name);
+        _ALAD_ISO_C_COMPAT_dlsym compat_dlsym = (_ALAD_ISO_C_COMPAT_dlsym) dlsym;
+        return (_alad_proc) compat_dlsym (module, name);
 }
 void _alad_close (void *module) {
         dlclose (module);
