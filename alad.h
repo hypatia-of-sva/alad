@@ -115,9 +115,6 @@
  *          strings in the internal _alad_load_alc_functions function.
  * 
  */
-extern void aladUpdateALPointers(ALCcontext* context, bool extensionsOnly);
-extern void aladUpdateALCPointersFromContext(ALCcontext* context, bool extensionsOnly);
-extern void aladUpdateALCPointersFromDevice(ALCdevice *device, bool extensionsOnly);
 
 
 #pragma once
