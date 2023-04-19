@@ -16,7 +16,8 @@
  *  This header loads in all OpenAL symbols except the functions, by loading in the AL headers with AL_NO_PROTOTYPES and ALC_NO_PROTOTYPES defined.
  *  In order for this to work, you need up to date header files, download them from the master branch of openal-soft:
  *      https://github.com/kcat/openal-soft/tree/master/include
- *  alad can't currently check on whether or not the headers work properly, but compilation will fail due to double definition.
+ *  (Currently to 1.23.1)
+ *  alad can't currently check on whether or not the headers work properly, but compilation will fail due to double definition or undefined types.
  *  Keep that in mind if you have compilation issues and put those headers under <AL/alext.h> and <AL/efx-presets.h> (the others are included in alext.h).
  *
  *  There are two interfaces to initialize the API, the (recomended) simplified interface and the manual interface with more options. 
@@ -530,6 +531,9 @@ LPALBUFFERCALLBACKSOFT           alBufferCallbackSOFT           = nullptr;
 LPALGETBUFFERPTRSOFT             alGetBufferPtrSOFT             = nullptr;
 LPALGETBUFFER3PTRSOFT            alGetBuffer3PtrSOFT            = nullptr;
 LPALGETBUFFERPTRVSOFT            alGetBufferPtrvSOFT            = nullptr;
+//AL_SOFT_source_start_delay
+LPALSOURCEPLAYATTIMESOFT         alSourcePlayAtTimeSOFT         = nullptr;
+LPALSOURCEPLAYATTIMEVSOFT        alSourcePlayAtTimevSOFT        = nullptr;
 
 //Core ALC
 LPALCCREATECONTEXT               alcCreateContext               = nullptr;
@@ -824,6 +828,9 @@ static void alad_load_al_extension_functions_ () {
         alGetBufferPtrSOFT            = REINTERPRET_CAST(LPALGETBUFFERPTRSOFT, compat_alGetProcAddress ("alGetBufferPtrSOFT"));
         alGetBuffer3PtrSOFT           = REINTERPRET_CAST(LPALGETBUFFER3PTRSOFT, compat_alGetProcAddress ("alGetBuffer3PtrSOFT"));
         alGetBufferPtrvSOFT           = REINTERPRET_CAST(LPALGETBUFFERPTRVSOFT, compat_alGetProcAddress ("alGetBufferPtrvSOFT"));
+        //AL_SOFT_source_start_delay
+        alSourcePlayAtTimeSOFT        = REINTERPRET_CAST(LPALSOURCEPLAYATTIMESOFT, compat_alGetProcAddress ("alSourcePlayAtTimeSOFT"));
+        alSourcePlayAtTimevSOFT       = REINTERPRET_CAST(LPALSOURCEPLAYATTIMEVSOFT, compat_alGetProcAddress ("alSourcePlayAtTimevSOFT"));
 }
 
 static void alad_load_alc_functions_contextfree_dlsym_ (void *module) {
