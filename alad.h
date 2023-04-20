@@ -6,7 +6,7 @@
  *      - Current OpenAL header files; download here: https://github.com/kcat/openal-soft/tree/master/include
  * 
  *  Usage:
- *
+ *  
  *  Include this file once with
  *
  *          #define ALAD_IMPLEMENTATION
@@ -120,12 +120,12 @@
 
 #pragma once
 
-//only include alad if the OpenAL headers are not used, because we include them again, and they may have been included with prototypes
+/* only include alad if the OpenAL headers are not used, because we include them again, and they may have been included with prototypes */
 #if !(defined(ALAD_H)) && !(defined(AL_AL_H)) && !(defined(AL_ALC_H)) && !(defined(AL_ALEXT_H)) && !(defined(AL_EFX_H)) && !(defined(EFX_PRESETS_H))
 #define ALAD_H
 
-//revision date
-#define ALAD_HEADER_REVISION 0x20221230
+/* revision date */
+#define ALAD_HEADER_REVISION 0x20230420
 
 #ifndef __cplusplus
 #ifndef nullptr
@@ -149,28 +149,28 @@ extern "C" {
 #define ALC_NO_PROTOTYPES
 #include <AL/alext.h>
 #include <AL/efx-presets.h>
-//currently it can't be checked whether or not the headers work properly, but compilation will fail due to double definition.
+/* currently it can't be checked whether or not the headers work properly. the old prototypes will be shadowed if present */
 
 
 
-//Public Interface:
+/* Public Interface: */
 
 
-//simplified Interface
+/* simplified Interface */
 extern void                             aladLoadAL();
 extern void                             aladUpdateAL();
 
-//manual interface
+/* manual interface */
 extern void                             aladLoadALContextFree (ALboolean loadAll);
 extern void                             aladLoadALFromLoaderFunction (LPALGETPROCADDRESS inital_loader);
 extern void                             aladUpdateALPointers (ALCcontext *context, ALboolean extensionsOnly);
 extern void                             aladUpdateALCPointersFromContext (ALCcontext *context, ALboolean extensionsOnly);
 extern void                             aladUpdateALCPointersFromDevice (ALCdevice *device, ALboolean extensionsOnly);
 
-//shared function
+/* shared function */
 extern void                             aladTerminate();
 
-//Core AL
+/* Core AL */
 extern LPALDOPPLERFACTOR                alad_alDopplerFactor;
 extern LPALDOPPLERVELOCITY              alad_alDopplerVelocity;
 extern LPALSPEEDOFSOUND                 alad_alSpeedOfSound;
@@ -245,7 +245,7 @@ extern LPALGETBUFFERI                   alad_alGetBufferi;
 extern LPALGETBUFFER3I                  alad_alGetBuffer3i;
 extern LPALGETBUFFERIV                  alad_alGetBufferiv;
 
-//EFX
+/* EFX */
 extern LPALGENEFFECTS                   alad_alGenEffects;
 extern LPALDELETEEFFECTS                alad_alDeleteEffects;
 extern LPALISEFFECT                     alad_alIsEffect;
@@ -280,20 +280,20 @@ extern LPALGETAUXILIARYEFFECTSLOTIV     alad_alGetAuxiliaryEffectSlotiv;
 extern LPALGETAUXILIARYEFFECTSLOTF      alad_alGetAuxiliaryEffectSlotf;
 extern LPALGETAUXILIARYEFFECTSLOTFV     alad_alGetAuxiliaryEffectSlotfv;
 
-//AL extensions
-//AL_EXT_STATIC_BUFFER
+/* AL extensions */
+/* AL_EXT_STATIC_BUFFER */
 extern PFNALBUFFERDATASTATICPROC        alad_alBufferDataStatic;
-//AL_SOFT_buffer_sub_data
+/* AL_SOFT_buffer_sub_data */
 extern PFNALBUFFERSUBDATASOFTPROC       alad_alBufferSubDataSOFT;
-//AL_EXT_FOLDBACK
+/* AL_EXT_FOLDBACK */
 extern LPALREQUESTFOLDBACKSTART         alad_alRequestFoldbackStart;
 extern LPALREQUESTFOLDBACKSTOP          alad_alRequestFoldbackStop;
-//AL_SOFT_buffer_samples
+/* AL_SOFT_buffer_samples */
 extern LPALBUFFERSAMPLESSOFT            alad_alBufferSamplesSOFT;
 extern LPALBUFFERSUBSAMPLESSOFT         alad_alBufferSubSamplesSOFT;
 extern LPALGETBUFFERSAMPLESSOFT         alad_alGetBufferSamplesSOFT;
 extern LPALISBUFFERFORMATSUPPORTEDSOFT  alad_alIsBufferFormatSupportedSOFT;
-//AL_SOFT_source_latency
+/* AL_SOFT_source_latency */
 extern LPALSOURCEDSOFT                  alad_alSourcedSOFT;
 extern LPALSOURCE3DSOFT                 alad_alSource3dSOFT;
 extern LPALSOURCEDVSOFT                 alad_alSourcedvSOFT;
@@ -306,23 +306,23 @@ extern LPALSOURCEI64VSOFT               alad_alSourcei64vSOFT;
 extern LPALGETSOURCEI64SOFT             alad_alGetSourcei64SOFT;
 extern LPALGETSOURCE3I64SOFT            alad_alGetSource3i64SOFT;
 extern LPALGETSOURCEI64VSOFT            alad_alGetSourcei64vSOFT;
-//AL_SOFT_deferred_updates
+/* AL_SOFT_deferred_updates */
 extern LPALDEFERUPDATESSOFT             alad_alDeferUpdatesSOFT;
 extern LPALPROCESSUPDATESSOFT           alad_alProcessUpdatesSOFT;
-//AL_SOFT_source_resampler
+/* AL_SOFT_source_resampler */
 extern LPALGETSTRINGISOFT               alad_alGetStringiSOFT;
-//AL_SOFT_events
+/* AL_SOFT_events */
 extern LPALEVENTCONTROLSOFT             alad_alEventControlSOFT;
 extern LPALEVENTCALLBACKSOFT            alad_alEventCallbackSOFT;
 extern LPALGETPOINTERSOFT               alad_alGetPointerSOFT;
 extern LPALGETPOINTERVSOFT              alad_alGetPointervSOFT;
-//AL_SOFT_callback_buffer
+/* AL_SOFT_callback_buffer */
 extern LPALBUFFERCALLBACKSOFT           alad_alBufferCallbackSOFT;
 extern LPALGETBUFFERPTRSOFT             alad_alGetBufferPtrSOFT;
 extern LPALGETBUFFER3PTRSOFT            alad_alGetBuffer3PtrSOFT;
 extern LPALGETBUFFERPTRVSOFT            alad_alGetBufferPtrvSOFT;
 
-//Core ALC
+/* Core ALC */
 extern LPALCCREATECONTEXT               alad_alcCreateContext;
 extern LPALCMAKECONTEXTCURRENT          alad_alcMakeContextCurrent;
 extern LPALCPROCESSCONTEXT              alad_alcProcessContext;
@@ -344,23 +344,23 @@ extern LPALCCAPTURESTART                alad_alcCaptureStart;
 extern LPALCCAPTURESTOP                 alad_alcCaptureStop;
 extern LPALCCAPTURESAMPLES              alad_alcCaptureSamples;
 
-//ALC extensions
-//ALC_EXT_thread_local_context
+/* ALC extensions */
+/* ALC_EXT_thread_local_context */
 extern PFNALCSETTHREADCONTEXTPROC       alad_alcSetThreadContext;
 extern PFNALCGETTHREADCONTEXTPROC       alad_alcGetThreadContext;
-//ALC_SOFT_loopback
+/* ALC_SOFT_loopback */
 extern LPALCLOOPBACKOPENDEVICESOFT      alad_alcLoopbackOpenDeviceSOFT;
 extern LPALCISRENDERFORMATSUPPORTEDSOFT alad_alcIsRenderFormatSupportedSOFT;
 extern LPALCRENDERSAMPLESSOFT           alad_alcRenderSamplesSOFT;
-//ALC_SOFT_pause_device
+/* ALC_SOFT_pause_device */
 extern LPALCDEVICEPAUSESOFT             alad_alcDevicePauseSOFT;
 extern LPALCDEVICERESUMESOFT            alad_alcDeviceResumeSOFT;
-//ALC_SOFT_HRTF
+/* ALC_SOFT_HRTF */
 extern LPALCGETSTRINGISOFT              alad_alcGetStringiSOFT;
 extern LPALCRESETDEVICESOFT             alad_alcResetDeviceSOFT;
-//ALC_SOFT_device_clock
+/* ALC_SOFT_device_clock */
 extern LPALCGETINTEGER64VSOFT           alad_alcGetInteger64vSOFT;
-//ALC_SOFT_reopen_device
+/* ALC_SOFT_reopen_device */
 extern LPALCREOPENDEVICESOFT            alad_alcReopenDeviceSOFT;
 
 
@@ -368,7 +368,7 @@ extern LPALCREOPENDEVICESOFT            alad_alcReopenDeviceSOFT;
 
 
 
-//Core AL
+/* Core AL */
 #define alDopplerFactor                 alad_alDopplerFactor
 #define alDopplerVelocity               alad_alDopplerVelocity
 #define alSpeedOfSound                  alad_alSpeedOfSound
@@ -443,7 +443,7 @@ extern LPALCREOPENDEVICESOFT            alad_alcReopenDeviceSOFT;
 #define alGetBuffer3i                   alad_alGetBuffer3i
 #define alGetBufferiv                   alad_alGetBufferiv
 
-//EFX
+/* EFX */
 #define alGenEffects                    alad_alGenEffects
 #define alDeleteEffects                 alad_alDeleteEffects
 #define alIsEffect                      alad_alIsEffect
@@ -478,20 +478,20 @@ extern LPALCREOPENDEVICESOFT            alad_alcReopenDeviceSOFT;
 #define alGetAuxiliaryEffectSlotf       alad_alGetAuxiliaryEffectSlotf
 #define alGetAuxiliaryEffectSlotfv      alad_alGetAuxiliaryEffectSlotfv
 
-//AL extensions
-//AL_EXT_STATIC_BUFFER
+/* AL extensions */
+/* AL_EXT_STATIC_BUFFER */
 #define alBufferDataStatic              alad_alBufferDataStatic
-//AL_SOFT_buffer_sub_data
+/* AL_SOFT_buffer_sub_data */
 #define alBufferSubDataSOFT             alad_alBufferSubDataSOFT
-//AL_EXT_FOLDBACK
+/* AL_EXT_FOLDBACK */
 #define alRequestFoldbackStart          alad_alRequestFoldbackStart
 #define alRequestFoldbackStop           alad_alRequestFoldbackStop
-//AL_SOFT_buffer_samples
+/* AL_SOFT_buffer_samples */
 #define alBufferSamplesSOFT             alad_alBufferSamplesSOFT
 #define alBufferSubSamplesSOFT          alad_alBufferSubSamplesSOFT
 #define alGetBufferSamplesSOFT          alad_alGetBufferSamplesSOFT
 #define alIsBufferFormatSupportedSOFT   alad_alIsBufferFormatSupportedSOFT
-//AL_SOFT_source_latency
+/* AL_SOFT_source_latency */
 #define alSourcedSOFT                   alad_alSourcedSOFT
 #define alSource3dSOFT                  alad_alSource3dSOFT
 #define alSourcedvSOFT                  alad_alSourcedvSOFT
@@ -504,23 +504,23 @@ extern LPALCREOPENDEVICESOFT            alad_alcReopenDeviceSOFT;
 #define alGetSourcei64SOFT              alad_alGetSourcei64SOFT
 #define alGetSource3i64SOFT             alad_alGetSource3i64SOFT
 #define alGetSourcei64vSOFT             alad_alGetSourcei64vSOFT
-//AL_SOFT_deferred_updates
+/* AL_SOFT_deferred_updates */
 #define alDeferUpdatesSOFT              alad_alDeferUpdatesSOFT
 #define alProcessUpdatesSOFT            alad_alProcessUpdatesSOFT
-//AL_SOFT_source_resampler
+/* AL_SOFT_source_resampler */
 #define alGetStringiSOFT                alad_alGetStringiSOFT
-//AL_SOFT_events
+/* AL_SOFT_events */
 #define alEventControlSOFT              alad_alEventControlSOFT
 #define alEventCallbackSOFT             alad_alEventCallbackSOFT
 #define alGetPointerSOFT                alad_alGetPointerSOFT
 #define alGetPointervSOFT               alad_alGetPointervSOFT
-//AL_SOFT_callback_buffer
+/* AL_SOFT_callback_buffer */
 #define alBufferCallbackSOFT            alad_alBufferCallbackSOFT
 #define alGetBufferPtrSOFT              alad_alGetBufferPtrSOFT
 #define alGetBuffer3PtrSOFT             alad_alGetBuffer3PtrSOFT
 #define alGetBufferPtrvSOFT             alad_alGetBufferPtrvSOFT
 
-//Core ALC
+/* Core ALC */
 #define alcCreateContext                alad_alcCreateContext
 #define alcMakeContextCurrent           alad_alcMakeContextCurrent
 #define alcProcessContext               alad_alcProcessContext
@@ -542,23 +542,23 @@ extern LPALCREOPENDEVICESOFT            alad_alcReopenDeviceSOFT;
 #define alcCaptureStop                  alad_alcCaptureStop
 #define alcCaptureSamples               alad_alcCaptureSamples
 
-//ALC extensions
-//ALC_EXT_thread_local_context
+/* ALC extensions */
+/* ALC_EXT_thread_local_context */
 #define alcSetThreadContext             alad_alcSetThreadContext
 #define alcGetThreadContext             alad_alcGetThreadContext
-//ALC_SOFT_loopback
+/* ALC_SOFT_loopback */
 #define alcLoopbackOpenDeviceSOFT       alad_alcLoopbackOpenDeviceSOFT
 #define alcIsRenderFormatSupportedSOFT  alad_alcIsRenderFormatSupportedSOFT
 #define alcRenderSamplesSOFT            alad_alcRenderSamplesSOFT
-//ALC_SOFT_pause_device
+/* ALC_SOFT_pause_device */
 #define alcDevicePauseSOFT              alad_alcDevicePauseSOFT
 #define alcDeviceResumeSOFT             alad_alcDeviceResumeSOFT
-//ALC_SOFT_HRTF
+/* ALC_SOFT_HRTF */
 #define alcGetStringiSOFT               alad_alcGetStringiSOFT
 #define alcResetDeviceSOFT              alad_alcResetDeviceSOFT
-//ALC_SOFT_device_clock
+/* ALC_SOFT_device_clock */
 #define alcGetInteger64vSOFT            alad_alcGetInteger64vSOFT
-//ALC_SOFT_reopen_device
+/* ALC_SOFT_reopen_device */
 #define alcReopenDeviceSOFT             alad_alcReopenDeviceSOFT
 
 
@@ -572,7 +572,7 @@ extern LPALCREOPENDEVICESOFT            alad_alcReopenDeviceSOFT;
 
 #ifdef ALAD_IMPLEMENTATION
 
-//Core AL
+/* Core AL */
 LPALDOPPLERFACTOR                alad_alDopplerFactor                = nullptr;
 LPALDOPPLERVELOCITY              alad_alDopplerVelocity              = nullptr;
 LPALSPEEDOFSOUND                 alad_alSpeedOfSound                 = nullptr;
@@ -647,7 +647,7 @@ LPALGETBUFFERI                   alad_alGetBufferi                   = nullptr;
 LPALGETBUFFER3I                  alad_alGetBuffer3i                  = nullptr;
 LPALGETBUFFERIV                  alad_alGetBufferiv                  = nullptr;
 
-//EFX
+/* EFX */
 LPALGENEFFECTS                   alad_alGenEffects                   = nullptr;
 LPALDELETEEFFECTS                alad_alDeleteEffects                = nullptr;
 LPALISEFFECT                     alad_alIsEffect                     = nullptr;
@@ -682,20 +682,20 @@ LPALGETAUXILIARYEFFECTSLOTIV     alad_alGetAuxiliaryEffectSlotiv     = nullptr;
 LPALGETAUXILIARYEFFECTSLOTF      alad_alGetAuxiliaryEffectSlotf      = nullptr;
 LPALGETAUXILIARYEFFECTSLOTFV     alad_alGetAuxiliaryEffectSlotfv     = nullptr;
 
-//AL extensions
-//AL_EXT_STATIC_BUFFER
+/* AL extensions */
+/* AL_EXT_STATIC_BUFFER */
 PFNALBUFFERDATASTATICPROC        alad_alBufferDataStatic             = nullptr;
-//AL_SOFT_buffer_sub_data
+/* AL_SOFT_buffer_sub_data */
 PFNALBUFFERSUBDATASOFTPROC       alad_alBufferSubDataSOFT            = nullptr;
-//AL_EXT_FOLDBACK
+/* AL_EXT_FOLDBACK */
 LPALREQUESTFOLDBACKSTART         alad_alRequestFoldbackStart         = nullptr;
 LPALREQUESTFOLDBACKSTOP          alad_alRequestFoldbackStop          = nullptr;
-//AL_SOFT_buffer_samples
+/* AL_SOFT_buffer_samples */
 LPALBUFFERSAMPLESSOFT            alad_alBufferSamplesSOFT            = nullptr;
 LPALBUFFERSUBSAMPLESSOFT         alad_alBufferSubSamplesSOFT         = nullptr;
 LPALGETBUFFERSAMPLESSOFT         alad_alGetBufferSamplesSOFT         = nullptr;
 LPALISBUFFERFORMATSUPPORTEDSOFT  alad_alIsBufferFormatSupportedSOFT  = nullptr;
-//AL_SOFT_source_latency
+/* AL_SOFT_source_latency */
 LPALSOURCEDSOFT                  alad_alSourcedSOFT                  = nullptr;
 LPALSOURCE3DSOFT                 alad_alSource3dSOFT                 = nullptr;
 LPALSOURCEDVSOFT                 alad_alSourcedvSOFT                 = nullptr;
@@ -708,26 +708,26 @@ LPALSOURCEI64VSOFT               alad_alSourcei64vSOFT               = nullptr;
 LPALGETSOURCEI64SOFT             alad_alGetSourcei64SOFT             = nullptr;
 LPALGETSOURCE3I64SOFT            alad_alGetSource3i64SOFT            = nullptr;
 LPALGETSOURCEI64VSOFT            alad_alGetSourcei64vSOFT            = nullptr;
-//AL_SOFT_deferred_updates
+/* AL_SOFT_deferred_updates */
 LPALDEFERUPDATESSOFT             alad_alDeferUpdatesSOFT             = nullptr;
 LPALPROCESSUPDATESSOFT           alad_alProcessUpdatesSOFT           = nullptr;
-//AL_SOFT_source_resampler
+/* AL_SOFT_source_resampler */
 LPALGETSTRINGISOFT               alad_alGetStringiSOFT               = nullptr;
-//AL_SOFT_events
+/* AL_SOFT_events */
 LPALEVENTCONTROLSOFT             alad_alEventControlSOFT             = nullptr;
 LPALEVENTCALLBACKSOFT            alad_alEventCallbackSOFT            = nullptr;
 LPALGETPOINTERSOFT               alad_alGetPointerSOFT               = nullptr;
 LPALGETPOINTERVSOFT              alad_alGetPointervSOFT              = nullptr;
-//AL_SOFT_callback_buffer
+/* AL_SOFT_callback_buffer */
 LPALBUFFERCALLBACKSOFT           alad_alBufferCallbackSOFT           = nullptr;
 LPALGETBUFFERPTRSOFT             alad_alGetBufferPtrSOFT             = nullptr;
 LPALGETBUFFER3PTRSOFT            alad_alGetBuffer3PtrSOFT            = nullptr;
 LPALGETBUFFERPTRVSOFT            alad_alGetBufferPtrvSOFT            = nullptr;
-//AL_SOFT_source_start_delay
+/* AL_SOFT_source_start_delay */
 LPALSOURCEPLAYATTIMESOFT         alad_alSourcePlayAtTimeSOFT         = nullptr;
 LPALSOURCEPLAYATTIMEVSOFT        alad_alSourcePlayAtTimevSOFT        = nullptr;
 
-//Core ALC
+/* Core ALC */
 LPALCCREATECONTEXT               alad_alcCreateContext               = nullptr;
 LPALCMAKECONTEXTCURRENT          alad_alcMakeContextCurrent          = nullptr;
 LPALCPROCESSCONTEXT              alad_alcProcessContext              = nullptr;
@@ -749,42 +749,42 @@ LPALCCAPTURESTART                alad_alcCaptureStart                = nullptr;
 LPALCCAPTURESTOP                 alad_alcCaptureStop                 = nullptr;
 LPALCCAPTURESAMPLES              alad_alcCaptureSamples              = nullptr;
 
-//ALC extensions
-//ALC_EXT_thread_local_context
+/* ALC extensions */
+/* ALC_EXT_thread_local_context */
 PFNALCSETTHREADCONTEXTPROC       alad_alcSetThreadContext            = nullptr;
 PFNALCGETTHREADCONTEXTPROC       alad_alcGetThreadContext            = nullptr;
-//ALC_SOFT_loopback
+/* ALC_SOFT_loopback */
 LPALCLOOPBACKOPENDEVICESOFT      alad_alcLoopbackOpenDeviceSOFT      = nullptr;
 LPALCISRENDERFORMATSUPPORTEDSOFT alad_alcIsRenderFormatSupportedSOFT = nullptr;
 LPALCRENDERSAMPLESSOFT           alad_alcRenderSamplesSOFT           = nullptr;
-//ALC_SOFT_pause_device
+/* ALC_SOFT_pause_device */
 LPALCDEVICEPAUSESOFT             alad_alcDevicePauseSOFT             = nullptr;
 LPALCDEVICERESUMESOFT            alad_alcDeviceResumeSOFT            = nullptr;
-//ALC_SOFT_HRTF
+/* ALC_SOFT_HRTF */
 LPALCGETSTRINGISOFT              alad:alcGetStringiSOFT              = nullptr;
 LPALCRESETDEVICESOFT             alad:alcResetDeviceSOFT             = nullptr;
-//ALC_SOFT_device_clock
+/* ALC_SOFT_device_clock */
 LPALCGETINTEGER64VSOFT           alad_alcGetInteger64vSOFT           = nullptr;
-//ALC_SOFT_reopen_device
+/* ALC_SOFT_reopen_device */
 LPALCREOPENDEVICESOFT            alad_alcReopenDeviceSOFT            = nullptr;
 
 
 
-//implemented down below
+/* implemented down below */
 typedef void (*alad_proc_) (void);
 static void      *alad_open_ (const char *path);
 static alad_proc_ alad_load_ (void *module, const char *name);
 static void       alad_close_ (void *module);
 
 
-//ISO C compatibility types for GCC warning: ISO C forbids conversion of object pointer to function pointer type [-Wpedantic]
+/* ISO C compatibility types for GCC warning: ISO C forbids conversion of object pointer to function pointer type [-Wpedantic] */
 typedef alad_proc_ (AL_APIENTRY *ALAD_ISO_C_COMPAT_LPALGETPROCADDRESS_) (const ALchar *fname);
 typedef alad_proc_ (ALC_APIENTRY *ALAD_ISO_C_COMPAT_LPALCGETPROCADDRESS_) (ALCdevice *device, const ALCchar *funcname);
 typedef alad_proc_ (ALC_APIENTRY *ALAD_ISO_C_COMPAT_dlsym_) (void *module, const char *name);
 
 static void alad_load_al_functions_contextfree_dlsym_ (void *module, ALboolean loadAll) {
         if (module == nullptr) return;
-        //Core AL functions without buffer, source, listener and doppler/distance functions, because none of these are necessary to create a context
+        /* Core AL functions without buffer, source, listener and doppler/distance functions, because none of these are necessary to create a context */
         alad_alGetProcAddress     = REINTERPRET_CAST(LPALGETPROCADDRESS, alad_load_ (module, "alGetProcAddress"));
         alad_alEnable             = REINTERPRET_CAST(LPALENABLE, alad_load_ (module, "alEnable"));
         alad_alDisable            = REINTERPRET_CAST(LPALDISABLE, alad_load_ (module, "alDisable"));
@@ -801,7 +801,7 @@ static void alad_load_al_functions_contextfree_dlsym_ (void *module, ALboolean l
         alad_alGetError           = REINTERPRET_CAST(LPALGETERROR, alad_load_ (module, "alGetError"));
         alad_alIsExtensionPresent = REINTERPRET_CAST(LPALISEXTENSIONPRESENT, alad_load_ (module, "alIsExtensionPresent"));
         alad_alGetEnumValue       = REINTERPRET_CAST(LPALGETENUMVALUE, alad_load_ (module, "alGetEnumValue"));
-        //the rest if wanted
+        /* the rest if wanted */
         if (loadAll != AL_FALSE) {
                 alad_alDopplerFactor        = REINTERPRET_CAST(LPALDOPPLERFACTOR, alad_load_ (module, "alDopplerFactor"));
                 alad_alDopplerVelocity      = REINTERPRET_CAST(LPALDOPPLERVELOCITY, alad_load_ (module, "alDopplerVelocity"));
@@ -864,9 +864,10 @@ static void alad_load_al_functions_contextfree_dlsym_ (void *module, ALboolean l
 }
 
 static void alad_load_al_functions_ () {
+        ALAD_ISO_C_COMPAT_LPALGETPROCADDRESS_ compat_alGetProcAddress;
         if (alGetProcAddress == nullptr) return;
-        ALAD_ISO_C_COMPAT_LPALGETPROCADDRESS_ compat_alGetProcAddress = REINTERPRET_CAST(ALAD_ISO_C_COMPAT_LPALGETPROCADDRESS_, alad_alGetProcAddress);
-        //Core AL
+        compat_alGetProcAddress = REINTERPRET_CAST(ALAD_ISO_C_COMPAT_LPALGETPROCADDRESS_, alad_alGetProcAddress);
+        /* Core AL */
         alad_alDopplerFactor                                               = REINTERPRET_CAST(LPALDOPPLERFACTOR, compat_alGetProcAddress ("alDopplerFactor"));
         alad_alDopplerVelocity                                             = REINTERPRET_CAST(LPALDOPPLERVELOCITY, compat_alGetProcAddress ("alDopplerVelocity"));
         alad_alSpeedOfSound                                                = REINTERPRET_CAST(LPALSPEEDOFSOUND, compat_alGetProcAddress ("alSpeedOfSound"));
@@ -942,9 +943,10 @@ static void alad_load_al_functions_ () {
 }
 
 static void alad_load_al_extension_functions_ () {
+        ALAD_ISO_C_COMPAT_LPALGETPROCADDRESS_ compat_alGetProcAddress;
         if (alGetProcAddress == nullptr) return;
-        ALAD_ISO_C_COMPAT_LPALGETPROCADDRESS_ compat_alGetProcAddress = REINTERPRET_CAST(ALAD_ISO_C_COMPAT_LPALGETPROCADDRESS_, alad_alGetProcAddress);
-        //EFX
+        compat_alGetProcAddress = REINTERPRET_CAST(ALAD_ISO_C_COMPAT_LPALGETPROCADDRESS_, alad_alGetProcAddress);
+        /* EFX */
         alad_alGenEffects                                                  = REINTERPRET_CAST(LPALGENEFFECTS, compat_alGetProcAddress ("alGenEffects"));
         alad_alDeleteEffects                                               = REINTERPRET_CAST(LPALDELETEEFFECTS, compat_alGetProcAddress ("alDeleteEffects"));
         alad_alIsEffect                                                    = REINTERPRET_CAST(LPALISEFFECT, compat_alGetProcAddress ("alIsEffect"));
@@ -979,20 +981,20 @@ static void alad_load_al_extension_functions_ () {
         alad_alGetAuxiliaryEffectSlotf     = REINTERPRET_CAST(LPALGETAUXILIARYEFFECTSLOTF, compat_alGetProcAddress ("alGetAuxiliaryEffectSlotf"));
         alad_alGetAuxiliaryEffectSlotfv    = REINTERPRET_CAST(LPALGETAUXILIARYEFFECTSLOTFV, compat_alGetProcAddress ("alGetAuxiliaryEffectSlotfv"));
 
-        //AL extensions
-        //AL_EXT_STATIC_BUFFER
+        /* AL extensions */
+        /* AL_EXT_STATIC_BUFFER */
         alad_alBufferDataStatic            = REINTERPRET_CAST(PFNALBUFFERDATASTATICPROC, compat_alGetProcAddress ("alBufferDataStatic"));
-        //AL_SOFT_buffer_sub_data
+        /* AL_SOFT_buffer_sub_data */
         alad_alBufferSubDataSOFT           = REINTERPRET_CAST(PFNALBUFFERSUBDATASOFTPROC, compat_alGetProcAddress ("alBufferSubDataSOFT"));
-        //AL_EXT_FOLDBACK
+        /* AL_EXT_FOLDBACK */
         alad_alRequestFoldbackStart        = REINTERPRET_CAST(LPALREQUESTFOLDBACKSTART, compat_alGetProcAddress ("alRequestFoldbackStart"));
         alad_alRequestFoldbackStop         = REINTERPRET_CAST(LPALREQUESTFOLDBACKSTOP, compat_alGetProcAddress ("alRequestFoldbackStop"));
-        //AL_SOFT_buffer_samples
+        /* AL_SOFT_buffer_samples */
         alad_alBufferSamplesSOFT           = REINTERPRET_CAST(LPALBUFFERSAMPLESSOFT, compat_alGetProcAddress ("alBufferSamplesSOFT"));
         alad_alBufferSubSamplesSOFT        = REINTERPRET_CAST(LPALBUFFERSUBSAMPLESSOFT, compat_alGetProcAddress ("alBufferSubSamplesSOFT"));
         alad_alGetBufferSamplesSOFT        = REINTERPRET_CAST(LPALGETBUFFERSAMPLESSOFT, compat_alGetProcAddress ("alGetBufferSamplesSOFT"));
         alad_alIsBufferFormatSupportedSOFT = REINTERPRET_CAST(LPALISBUFFERFORMATSUPPORTEDSOFT, compat_alGetProcAddress ("alIsBufferFormatSupportedSOFT"));
-        //AL_SOFT_source_latency
+        /* AL_SOFT_source_latency */
         alad_alSourcedSOFT                 = REINTERPRET_CAST(LPALSOURCEDSOFT, compat_alGetProcAddress ("alSourcedSOFT"));
         alad_alSource3dSOFT                = REINTERPRET_CAST(LPALSOURCE3DSOFT, compat_alGetProcAddress ("alSource3dSOFT"));
         alad_alSourcedvSOFT                = REINTERPRET_CAST(LPALSOURCEDVSOFT, compat_alGetProcAddress ("alSourcedvSOFT"));
@@ -1005,29 +1007,29 @@ static void alad_load_al_extension_functions_ () {
         alad_alGetSourcei64SOFT            = REINTERPRET_CAST(LPALGETSOURCEI64SOFT, compat_alGetProcAddress ("alGetSourcei64SOFT"));
         alad_alGetSource3i64SOFT           = REINTERPRET_CAST(LPALGETSOURCE3I64SOFT, compat_alGetProcAddress ("alGetSource3i64SOFT"));
         alad_alGetSourcei64vSOFT           = REINTERPRET_CAST(LPALGETSOURCEI64VSOFT, compat_alGetProcAddress ("alGetSourcei64vSOFT"));
-        //AL_SOFT_deferred_updates
+        /* AL_SOFT_deferred_updates */
         alad_alDeferUpdatesSOFT            = REINTERPRET_CAST(LPALDEFERUPDATESSOFT, compat_alGetProcAddress ("alDeferUpdatesSOFT"));
         alad_alProcessUpdatesSOFT          = REINTERPRET_CAST(LPALPROCESSUPDATESSOFT, compat_alGetProcAddress ("alProcessUpdatesSOFT"));
-        //AL_SOFT_source_resampler
+        /* AL_SOFT_source_resampler */
         alad_alGetStringiSOFT              = REINTERPRET_CAST(LPALGETSTRINGISOFT, compat_alGetProcAddress ("alGetStringiSOFT"));
-        //AL_SOFT_events
+        /* AL_SOFT_events */
         alad_alEventControlSOFT            = REINTERPRET_CAST(LPALEVENTCONTROLSOFT, compat_alGetProcAddress ("alEventControlSOFT"));
         alad_alEventCallbackSOFT           = REINTERPRET_CAST(LPALEVENTCALLBACKSOFT, compat_alGetProcAddress ("alEventCallbackSOFT"));
         alad_alGetPointerSOFT              = REINTERPRET_CAST(LPALGETPOINTERSOFT, compat_alGetProcAddress ("alGetPointerSOFT"));
         alad_alGetPointervSOFT             = REINTERPRET_CAST(LPALGETPOINTERVSOFT, compat_alGetProcAddress ("alGetPointervSOFT"));
-        //AL_SOFT_callback_buffer
+        /* AL_SOFT_callback_buffer */
         alad_alBufferCallbackSOFT          = REINTERPRET_CAST(LPALBUFFERCALLBACKSOFT, compat_alGetProcAddress ("alBufferCallbackSOFT"));
         alad_alGetBufferPtrSOFT            = REINTERPRET_CAST(LPALGETBUFFERPTRSOFT, compat_alGetProcAddress ("alGetBufferPtrSOFT"));
         alad_alGetBuffer3PtrSOFT           = REINTERPRET_CAST(LPALGETBUFFER3PTRSOFT, compat_alGetProcAddress ("alGetBuffer3PtrSOFT"));
         alad_alGetBufferPtrvSOFT           = REINTERPRET_CAST(LPALGETBUFFERPTRVSOFT, compat_alGetProcAddress ("alGetBufferPtrvSOFT"));
-        //AL_SOFT_source_start_delay
+        /* AL_SOFT_source_start_delay */
         alad_alSourcePlayAtTimeSOFT        = REINTERPRET_CAST(LPALSOURCEPLAYATTIMESOFT, compat_alGetProcAddress ("alSourcePlayAtTimeSOFT"));
         alad_alSourcePlayAtTimevSOFT       = REINTERPRET_CAST(LPALSOURCEPLAYATTIMEVSOFT, compat_alGetProcAddress ("alSourcePlayAtTimevSOFT"));
 }
 
 static void alad_load_alc_functions_contextfree_dlsym_ (void *module) {
         if (module == nullptr) return;
-        //Core ALC
+        /* Core ALC */
         alad_alcGetProcAddress     = REINTERPRET_CAST(LPALCGETPROCADDRESS, alad_load_ (module, "alcGetProcAddress"));
         alad_alcCreateContext      = REINTERPRET_CAST(LPALCCREATECONTEXT, alad_load_ (module, "alcCreateContext"));
         alad_alcMakeContextCurrent = REINTERPRET_CAST(LPALCMAKECONTEXTCURRENT, alad_load_ (module, "alcMakeContextCurrent"));
@@ -1052,13 +1054,14 @@ static void alad_load_alc_functions_contextfree_dlsym_ (void *module) {
 
 
 static void alad_load_alc_functions_from_al_ () {
+        ALAD_ISO_C_COMPAT_LPALGETPROCADDRESS_ compat_alGetProcAddress;
         if (alGetProcAddress == nullptr) return;
-        ALAD_ISO_C_COMPAT_LPALGETPROCADDRESS_ compat_alGetProcAddress = REINTERPRET_CAST(ALAD_ISO_C_COMPAT_LPALGETPROCADDRESS_, alad_alGetProcAddress);
-        //Only load function loader once, and only if not already loaded from shared library
+        compat_alGetProcAddress = REINTERPRET_CAST(ALAD_ISO_C_COMPAT_LPALGETPROCADDRESS_, alad_alGetProcAddress);
+        /* Only load function loader once, and only if not already loaded from shared library */
         if (alad_alcGetProcAddress == nullptr) {
                 alad_alcGetProcAddress = REINTERPRET_CAST(LPALCGETPROCADDRESS, compat_alGetProcAddress ("alcGetProcAddress"));
         }
-        //Core ALC
+        /* Core ALC */
         alad_alcCreateContext      = REINTERPRET_CAST(LPALCCREATECONTEXT, compat_alGetProcAddress ("alcCreateContext"));
         alad_alcMakeContextCurrent = REINTERPRET_CAST(LPALCMAKECONTEXTCURRENT, compat_alGetProcAddress ("alcMakeContextCurrent"));
         alad_alcProcessContext     = REINTERPRET_CAST(LPALCPROCESSCONTEXT, compat_alGetProcAddress ("alcProcessContext"));
@@ -1082,30 +1085,32 @@ static void alad_load_alc_functions_from_al_ () {
 
 
 static void alad_load_alc_extension_functions_from_al_ () {
+        ALAD_ISO_C_COMPAT_LPALGETPROCADDRESS_ compat_alGetProcAddress;
         if (alGetProcAddress == nullptr) return;
-        ALAD_ISO_C_COMPAT_LPALGETPROCADDRESS_ compat_alGetProcAddress = REINTERPRET_CAST(ALAD_ISO_C_COMPAT_LPALGETPROCADDRESS_, alad_alGetProcAddress);
-        //ALC extensions
-        //ALC_EXT_thread_local_context
+        compat_alGetProcAddress = REINTERPRET_CAST(ALAD_ISO_C_COMPAT_LPALGETPROCADDRESS_, alad_alGetProcAddress);
+        /* ALC extensions */
+        /* ALC_EXT_thread_local_context */
         alad_alcSetThreadContext                                           = REINTERPRET_CAST(PFNALCSETTHREADCONTEXTPROC, compat_alGetProcAddress ("alcSetThreadContext"));
         alad_alcGetThreadContext                                           = REINTERPRET_CAST(PFNALCGETTHREADCONTEXTPROC, compat_alGetProcAddress ("alcGetThreadContext"));
-        //ALC_SOFT_loopback
+        /* ALC_SOFT_loopback */
         alad_alcLoopbackOpenDeviceSOFT                                     = REINTERPRET_CAST(LPALCLOOPBACKOPENDEVICESOFT, compat_alGetProcAddress ("alcLoopbackOpenDeviceSOFT"));
         alad_alcIsRenderFormatSupportedSOFT = REINTERPRET_CAST(LPALCISRENDERFORMATSUPPORTEDSOFT, compat_alGetProcAddress ("alcIsRenderFormatSupportedSOFT"));
         alad_alcRenderSamplesSOFT           = REINTERPRET_CAST(LPALCRENDERSAMPLESSOFT, compat_alGetProcAddress ("alcRenderSamplesSOFT"));
-        //ALC_SOFT_pause_device
+        /* ALC_SOFT_pause_device */
         alad_alcDevicePauseSOFT             = REINTERPRET_CAST(LPALCDEVICEPAUSESOFT, compat_alGetProcAddress ("alcDevicePauseSOFT"));
         alad_alcDeviceResumeSOFT            = REINTERPRET_CAST(LPALCDEVICERESUMESOFT, compat_alGetProcAddress ("alcDeviceResumeSOFT"));
-        //ALC_SOFT_HRTF
+        /* ALC_SOFT_HRTF */
         alad_alcGetStringiSOFT              = REINTERPRET_CAST(LPALCGETSTRINGISOFT, compat_alGetProcAddress ("alcGetStringiSOFT"));
         alad_alcResetDeviceSOFT             = REINTERPRET_CAST(LPALCRESETDEVICESOFT, compat_alGetProcAddress ("alcResetDeviceSOFT"));
-        //ALC_SOFT_device_clock
+        /* ALC_SOFT_device_clock */
         alad_alcGetInteger64vSOFT           = REINTERPRET_CAST(LPALCGETINTEGER64VSOFT, compat_alGetProcAddress ("alcGetInteger64vSOFT"));
-        //ALC_SOFT_reopen_device
+        /* ALC_SOFT_reopen_device */
         alad_alcReopenDeviceSOFT            = REINTERPRET_CAST(LPALCREOPENDEVICESOFT, compat_alGetProcAddress ("alcReopenDeviceSOFT"));
 }
 
 static void alad_load_alc_functions_ (ALCdevice *device) {
-        //old loader code left for future use
+        ALAD_ISO_C_COMPAT_LPALCGETPROCADDRESS_ compat_alcGetProcAddress;
+        /* old loader code left for future use */
         /*
     if((alad_alGetProcAddress == nullptr) && (alad_alcGetProcAddress == nullptr)) return;
     if(alad_alcGetProcAddress == nullptr) {
@@ -1113,8 +1118,8 @@ static void alad_load_alc_functions_ (ALCdevice *device) {
     }
     */
         if (alad_alcGetProcAddress == nullptr) return;
-        ALAD_ISO_C_COMPAT_LPALCGETPROCADDRESS_ compat_alcGetProcAddress = REINTERPRET_CAST(ALAD_ISO_C_COMPAT_LPALCGETPROCADDRESS_, alad_alcGetProcAddress);
-        //Core ALC
+        compat_alcGetProcAddress = REINTERPRET_CAST(ALAD_ISO_C_COMPAT_LPALCGETPROCADDRESS_, alad_alcGetProcAddress);
+        /* Core ALC */
         alad_alcCreateContext                                                = REINTERPRET_CAST(LPALCCREATECONTEXT, compat_alcGetProcAddress (device, "alcCreateContext"));
         alad_alcMakeContextCurrent                                           = REINTERPRET_CAST(LPALCMAKECONTEXTCURRENT, compat_alcGetProcAddress (device, "alcMakeContextCurrent"));
         alad_alcProcessContext                                               = REINTERPRET_CAST(LPALCPROCESSCONTEXT, compat_alcGetProcAddress (device, "alcProcessContext"));
@@ -1137,31 +1142,32 @@ static void alad_load_alc_functions_ (ALCdevice *device) {
 }
 
 static void alad_load_alc_extension_functions_ (ALCdevice *device) {
+        ALAD_ISO_C_COMPAT_LPALCGETPROCADDRESS_ compat_alcGetProcAddress;
         if (alad_alcGetProcAddress == nullptr) return;
-        ALAD_ISO_C_COMPAT_LPALCGETPROCADDRESS_ compat_alcGetProcAddress = REINTERPRET_CAST(ALAD_ISO_C_COMPAT_LPALCGETPROCADDRESS_, alad_alcGetProcAddress);
-        //ALC extensions
-        //ALC_EXT_thread_local_context
+        compat_alcGetProcAddress = REINTERPRET_CAST(ALAD_ISO_C_COMPAT_LPALCGETPROCADDRESS_, alad_alcGetProcAddress);
+        /* ALC extensions */
+        /* ALC_EXT_thread_local_context */
         alad_alcSetThreadContext                                             = REINTERPRET_CAST(PFNALCSETTHREADCONTEXTPROC, compat_alcGetProcAddress (device, "alcSetThreadContext"));
         alad_alcGetThreadContext                                             = REINTERPRET_CAST(PFNALCGETTHREADCONTEXTPROC, compat_alcGetProcAddress (device, "alcGetThreadContext"));
-        //ALC_SOFT_loopback
+        /* ALC_SOFT_loopback */
         alad_alcLoopbackOpenDeviceSOFT      = REINTERPRET_CAST(LPALCLOOPBACKOPENDEVICESOFT, compat_alcGetProcAddress (device, "alcLoopbackOpenDeviceSOFT"));
         alad_alcIsRenderFormatSupportedSOFT = REINTERPRET_CAST(LPALCISRENDERFORMATSUPPORTEDSOFT, compat_alcGetProcAddress (device, "alcIsRenderFormatSupportedSOFT"));
         alad_alcRenderSamplesSOFT           = REINTERPRET_CAST(LPALCRENDERSAMPLESSOFT, compat_alcGetProcAddress (device, "alcRenderSamplesSOFT"));
-        //ALC_SOFT_pause_device
+        /* ALC_SOFT_pause_device */
         alad_alcDevicePauseSOFT             = REINTERPRET_CAST(LPALCDEVICEPAUSESOFT, compat_alcGetProcAddress (device, "alcDevicePauseSOFT"));
         alad_alcDeviceResumeSOFT            = REINTERPRET_CAST(LPALCDEVICERESUMESOFT, compat_alcGetProcAddress (device, "alcDeviceResumeSOFT"));
-        //ALC_SOFT_HRTF
+        /* ALC_SOFT_HRTF */
         alad_alcGetStringiSOFT              = REINTERPRET_CAST(LPALCGETSTRINGISOFT, compat_alcGetProcAddress (device, "alcGetStringiSOFT"));
         alad_alcResetDeviceSOFT             = REINTERPRET_CAST(LPALCRESETDEVICESOFT, compat_alcGetProcAddress (device, "alcResetDeviceSOFT"));
-        //ALC_SOFT_device_clock
+        /* ALC_SOFT_device_clock */
         alad_alcGetInteger64vSOFT           = REINTERPRET_CAST(LPALCGETINTEGER64VSOFT, compat_alcGetProcAddress (device, "alcGetInteger64vSOFT"));
-        //ALC_SOFT_reopen_device
+        /* ALC_SOFT_reopen_device */
         alad_alcReopenDeviceSOFT            = REINTERPRET_CAST(LPALCREOPENDEVICESOFT, compat_alcGetProcAddress (device, "alcReopenDeviceSOFT"));
 }
 
 
 
-//modelled after GLFW, see win32_module.c and posix_module.c specifically
+/* modelled after GLFW, see win32_module.c and posix_module.c specifically */
 #if defined(_WIN32) || defined(__WIN32__) || defined(WIN32) || defined(__MINGW32__)
 #define NOMINMAX
 #define VC_EXTRALEAN
@@ -1184,16 +1190,17 @@ static void *alad_open_ (const char *path) {
         return dlopen (path, RTLD_LAZY | RTLD_LOCAL);
 }
 static alad_proc_ alad_load_ (void *module, const char *name) {
-        ALAD_ISO_C_COMPAT_dlsym_ compat_dlsym = REINTERPRET_CAST(ALAD_ISO_C_COMPAT_dlsym_, dlsym);
+        ALAD_ISO_C_COMPAT_dlsym_ compat_dlsym;
+        compat_dlsym = REINTERPRET_CAST(ALAD_ISO_C_COMPAT_dlsym_, dlsym);
         return REINTERPRET_CAST(alad_proc_, compat_dlsym (module, name));
 }
 static void alad_close_ (void *module) {
         dlclose (module);
 }
 
-//there are also libopenal.so.1.[X].[Y] and libopenal.1.[X].[Y].dylib respectively, but it would be difficult to look all of those up
+/* there are also libopenal.so.1.[X].[Y] and libopenal.1.[X].[Y].dylib respectively, but it would be difficult to look all of those up */
 #if defined(__APPLE__)
-//not tested myself; the only references I could find are https://github.com/ToweOPrO/sadsad and https://pastebin.com/MEmh3ZFr, which is at least tenuous
+/* not tested myself; the only references I could find are https://github.com/ToweOPrO/sadsad and https://pastebin.com/MEmh3ZFr, which is at least tenuous */
 #define alad_LIB_NAME_           "libopenal.1.dylib"
 #define alad_SECONDARY_LIB_NAME_ "libopenal.dylib"
 #else
@@ -1208,9 +1215,9 @@ static void alad_close_ (void *module) {
 static void *alad_module_ = nullptr;
 
 static void  alad_load_lib_ () {
-        //don't load shared object twice
+        /* don't load shared object twice */
         if (alad_module_ != nullptr) return;
-        //use fallback so name
+        /* use fallback so name */
         alad_module_ = alad_open_ (alad_LIB_NAME_);
         if (alad_module_ == nullptr) {
                 alad_module_ = alad_open_ (alad_SECONDARY_LIB_NAME_);
@@ -1231,7 +1238,7 @@ static void alad_unload_lib_ () {
 
 
 
-//manual interface
+/* manual interface */
 void aladLoadALContextFree (ALboolean loadAll) {
         alad_load_lib_();
         alad_load_al_functions_contextfree_dlsym_ (alad_module_, loadAll);
@@ -1250,8 +1257,11 @@ void aladLoadALFromLoaderFunction (LPALGETPROCADDRESS inital_loader) {
 
 
 void aladUpdateALPointers (ALCcontext *context, ALboolean extensionsOnly) {
-        ALboolean   switchContext = (context != nullptr);
-        ALCcontext *oldContext = nullptr;
+        ALboolean   switchContext;
+        ALCcontext *oldContext;
+        
+        switchContext = (context != nullptr);
+        oldContext = nullptr;
         if (switchContext) {
                 oldContext = alad_alcGetCurrentContext();
                 alad_alcMakeContextCurrent (context);
@@ -1266,8 +1276,11 @@ void aladUpdateALPointers (ALCcontext *context, ALboolean extensionsOnly) {
 }
 
 void aladUpdateALCPointersFromContext (ALCcontext *context, ALboolean extensionsOnly) {
-        ALboolean   switchContext = (context != nullptr);
-        ALCcontext *oldContext = nullptr;
+        ALboolean   switchContext;
+        ALCcontext *oldContext;
+        
+        switchContext = (context != nullptr);
+        oldContext = nullptr;
         if (switchContext) {
                 oldContext = alad_alcGetCurrentContext();
                 alad_alcMakeContextCurrent (context);
@@ -1294,24 +1307,26 @@ void aladTerminate () {
 
 
 
-//simplified Interface
+/* simplified Interface */
 void aladLoadAL () {
         aladLoadALContextFree (AL_TRUE);
 }
 void aladUpdateAL () {
-        //load extensions with alGetProcAddress
+        ALCdevice *device;
+        
+        /* load extensions with alGetProcAddress */
         alad_load_al_extension_functions_();
-        //use current contexts device to load ALC extensions with alcGetProcAddress
-        ALCdevice *device = alad_alcGetContextsDevice (alad_alcGetCurrentContext());
+        /* use current contexts device to load ALC extensions with alcGetProcAddress */
+        device = alad_alcGetContextsDevice (alad_alcGetCurrentContext());
         alad_load_alc_extension_functions_ (device);
 }
 
 
 
-#endif        // ALAD_IMPLEMENTATION
+#endif        /* ALAD_IMPLEMENTATION */
 
 #if defined(__cplusplus)
 } /* extern "C" */
 #endif
 
-#endif        // ALAD_H
+#endif        /* ALAD_H */
