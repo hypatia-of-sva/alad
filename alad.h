@@ -769,20 +769,71 @@ LPALCGETINTEGER64VSOFT           alad_alcGetInteger64vSOFT           = nullptr;
 LPALCREOPENDEVICESOFT            alad_alcReopenDeviceSOFT            = nullptr;
 
 
-
-/* implemented down below */
+        
+        
+/*  Function loading facilities: */
+        
+        
+        
 typedef void (*alad_proc_) (void);
-static void      *alad_open_ (const char *path);
-static alad_proc_ alad_load_ (void *module, const char *name);
-static void       alad_close_ (void *module);
-
+        
 
 /* ISO C compatibility types for GCC warning: ISO C forbids conversion of object pointer to function pointer type [-Wpedantic] */
 typedef alad_proc_ (AL_APIENTRY *ALAD_ISO_C_COMPAT_LPALGETPROCADDRESS_) (const ALchar *fname);
 typedef alad_proc_ (ALC_APIENTRY *ALAD_ISO_C_COMPAT_LPALCGETPROCADDRESS_) (ALCdevice *device, const ALCchar *funcname);
 typedef alad_proc_ (ALC_APIENTRY *ALAD_ISO_C_COMPAT_dlsym_) (void *module, const char *name);
+        
 
-static void alad_load_al_functions_contextfree_dlsym_ (void *module, ALboolean loadAll) {
+/* modelled after GLFW, see win32_module.c and posix_module.c specifically */
+#if defined(_WIN32) || defined(__WIN32__) || defined(WIN32) || defined(__MINGW32__)
+#define NOMINMAX
+#define VC_EXTRALEAN
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+typedef HMODULE alad_module_t_;
+static alad_module_t_ alad_open_ (const char *path) {
+        return LoadLibraryA (path);
+}
+static alad_proc_ alad_load_ (alad_module_t_ module, const char *name) {
+        return REINTERPRET_CAST(alad_proc_, GetProcAddress (module, name));
+}
+static void alad_close_ (alad_module_t_ module) {
+        FreeLibrary (module);
+}
+#define alad_LIB_NAME_           "OpenAL32.dll"
+#define alad_SECONDARY_LIB_NAME_ "soft_oal.dll"
+#else /* Unix defaults otherwise */
+#include <dlfcn.h>
+typedef void *alad_module_t_;
+static alad_module_t_ alad_open_ (const char *path) {
+        return dlopen (path, RTLD_LAZY | RTLD_LOCAL);
+}
+static alad_proc_ alad_load_ (alad_module_t_ module, const char *name) {
+        ALAD_ISO_C_COMPAT_dlsym_ compat_dlsym;
+        compat_dlsym = REINTERPRET_CAST(ALAD_ISO_C_COMPAT_dlsym_, dlsym);
+        return REINTERPRET_CAST(alad_proc_, compat_dlsym (module, name));
+}
+static void alad_close_ (alad_module_t_ module) {
+        dlclose (module);
+}
+
+/* there are also libopenal.so.1.[X].[Y] and libopenal.1.[X].[Y].dylib respectively, but it would be difficult to look all of those up */
+#if defined(__APPLE__)
+/* not tested myself; the only references I could find are https://github.com/ToweOPrO/sadsad and https://pastebin.com/MEmh3ZFr, which is at least tenuous */
+#define alad_LIB_NAME_           "libopenal.1.dylib"
+#define alad_SECONDARY_LIB_NAME_ "libopenal.dylib"
+#else
+#define alad_LIB_NAME_           "libopenal.so.1"
+#define alad_SECONDARY_LIB_NAME_ "libopenal.so"
+#endif
+
+#endif /* _WIN32 */
+
+
+/* The functions using alad_load_ and alad_close_ are defined down below, the definitions were moved to here
+   in order to have the alad_module_t_ type defined to be used in the following functions. */
+
+static void alad_load_al_functions_contextfree_dlsym_ (alad_module_t_ module, ALboolean loadAll) {
         if (module == nullptr) return;
         /* Core AL functions without buffer, source, listener and doppler/distance functions, because none of these are necessary to create a context */
         alad_alGetProcAddress     = REINTERPRET_CAST(LPALGETPROCADDRESS, alad_load_ (module, "alGetProcAddress"));
@@ -1027,7 +1078,7 @@ static void alad_load_al_extension_functions_ () {
         alad_alSourcePlayAtTimevSOFT       = REINTERPRET_CAST(LPALSOURCEPLAYATTIMEVSOFT, compat_alGetProcAddress ("alSourcePlayAtTimevSOFT"));
 }
 
-static void alad_load_alc_functions_contextfree_dlsym_ (void *module) {
+static void alad_load_alc_functions_contextfree_dlsym_ (alad_module_t_ module) {
         if (module == nullptr) return;
         /* Core ALC */
         alad_alcGetProcAddress     = REINTERPRET_CAST(LPALCGETPROCADDRESS, alad_load_ (module, "alcGetProcAddress"));
@@ -1167,52 +1218,9 @@ static void alad_load_alc_extension_functions_ (ALCdevice *device) {
 
 
 
-/* modelled after GLFW, see win32_module.c and posix_module.c specifically */
-#if defined(_WIN32) || defined(__WIN32__) || defined(WIN32) || defined(__MINGW32__)
-#define NOMINMAX
-#define VC_EXTRALEAN
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-static void *alad_open_ (const char *path) {
-        return LoadLibraryA (path);
-}
-static alad_proc_ alad_load_ (void *module, const char *name) {
-        return (alad_proc_) GetProcAddress ((HMODULE) module, name);
-}
-static void alad_close_ (void *module) {
-        FreeLibrary ((HMODULE) module);
-}
-#define alad_LIB_NAME_           "OpenAL32.dll"
-#define alad_SECONDARY_LIB_NAME_ "soft_oal.dll"
-#else /* Unix defaults otherwise */
-#include <dlfcn.h>
-static void *alad_open_ (const char *path) {
-        return dlopen (path, RTLD_LAZY | RTLD_LOCAL);
-}
-static alad_proc_ alad_load_ (void *module, const char *name) {
-        ALAD_ISO_C_COMPAT_dlsym_ compat_dlsym;
-        compat_dlsym = REINTERPRET_CAST(ALAD_ISO_C_COMPAT_dlsym_, dlsym);
-        return REINTERPRET_CAST(alad_proc_, compat_dlsym (module, name));
-}
-static void alad_close_ (void *module) {
-        dlclose (module);
-}
-
-/* there are also libopenal.so.1.[X].[Y] and libopenal.1.[X].[Y].dylib respectively, but it would be difficult to look all of those up */
-#if defined(__APPLE__)
-/* not tested myself; the only references I could find are https://github.com/ToweOPrO/sadsad and https://pastebin.com/MEmh3ZFr, which is at least tenuous */
-#define alad_LIB_NAME_           "libopenal.1.dylib"
-#define alad_SECONDARY_LIB_NAME_ "libopenal.dylib"
-#else
-#define alad_LIB_NAME_           "libopenal.so.1"
-#define alad_SECONDARY_LIB_NAME_ "libopenal.so"
-#endif
-
-#endif /* _WIN32 */
 
 
-
-static void *alad_module_ = nullptr;
+static alad_module_t_ alad_module_ = nullptr;
 
 static void  alad_load_lib_ () {
         /* don't load shared object twice */
