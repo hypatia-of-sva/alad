@@ -52,6 +52,14 @@ ALenum          alGetErrorExplicitEXT           (ALCcontext* context, void);
 ALboolean       alIsExtensionPresentExplicitEXT (ALCcontext* context, const ALchar *extname);
 void*           alGetProcAddressExplicitEXT     (ALCcontext* context, const ALchar *fname);
 ALenum          alGetEnumValueExplicitEXT       (ALCcontext* context, const ALchar *ename);
+/* currently listener aligned in implementation, but theoretically closer to the context */
+void            alGenSourcesExplicitEXT         (ALCcontext* context, ALsizei n, ALuint *sources);
+void            alDeleteSourcesExplicitEXT      (ALCcontext* context, ALsizei n, const ALuint *sources);
+ALboolean       alIsSourceExplicitEXT           (ALCcontext* context, ALuint source);
+void            alSourcePlayvExplicitEXT        (ALCcontext* context, ALsizei n, const ALuint *sources);
+void            alSourceStopvExplicitEXT        (ALCcontext* context, ALsizei n, const ALuint *sources);
+void            alSourceRewindvExplicitEXT      (ALCcontext* context, ALsizei n, const ALuint *sources);
+void            alSourcePausevExplicitEXT       (ALCcontext* context, ALsizei n, const ALuint *sources);
 
 
 /* Function prototypes for added listener references: */
@@ -68,13 +76,6 @@ void            alGetListenerfvExplicitEXT      (ALlistener listener, ALenum par
 void            alGetListeneriExplicitEXT       (ALlistener listener, ALenum param, ALint *value);
 void            alGetListener3iExplicitEXT      (ALlistener listener, ALenum param, ALint *value1, ALint *value2, ALint *value3);
 void            alGetListenerivExplicitEXT      (ALlistener listener, ALenum param, ALint *values);
-void            alGenSourcesExplicitEXT         (ALlistener listener, ALsizei n, ALuint *sources);
-void            alDeleteSourcesExplicitEXT      (ALlistener listener, ALsizei n, const ALuint *sources);
-ALboolean       alIsSourceExplicitEXT           (ALlistener listener, ALuint source);
-void            alSourcePlayvExplicitEXT        (ALlistener listener, ALsizei n, const ALuint *sources);
-void            alSourceStopvExplicitEXT        (ALlistener listener, ALsizei n, const ALuint *sources);
-void            alSourceRewindvExplicitEXT      (ALlistener listener, ALsizei n, const ALuint *sources);
-void            alSourcePausevExplicitEXT       (ALlistener listener, ALsizei n, const ALuint *sources);
 
 
 
@@ -128,8 +129,9 @@ void            alDestroyListenerEXT            (ALCcontext* context, ALlistener
             } while(0);                                                     
 
 /* defined to be the same since there is currently no difference in implementation */
-#define ALEXP_LISTENER_WRAP(listener, code                                  \
+#define ALEXP_LISTENER_WRAP(listener, code)                                 \
             ALEXP_CONTEXT_WRAP(listener, code)
+
 
 
 void            alGenBuffersExplicitEXT         (ALCdevice* device, ALsizei n, ALuint *buffers) {
@@ -228,6 +230,68 @@ ALenum          alGetEnumValueExplicitEXT       (ALCcontext* context, const ALch
     return e;
 }
 
+void            alGenSourcesExplicitEXT         (ALCcontext* context, ALsizei n, ALuint *sources) {
+    ALEXP_CONTEXT_WRAP(context, (alGenSources(n, sources)))
+}
+void            alDeleteSourcesExplicitEXT      (ALCcontext* context, ALsizei n, const ALuint *sources) {
+    ALEXP_CONTEXT_WRAP(context, (alDeleteSources(n, sources)))
+}
+ALboolean       alIsSourceExplicitEXT           (ALCcontext* context, ALuint source) {
+    ALboolean isSource;
+    ALEXP_CONTEXT_WRAP(context, (isSource = alIsSource(source)))
+    return isSource;
+}
+void            alSourcePlayvExplicitEXT        (ALCcontext* context, ALsizei n, const ALuint *sources) {
+    ALEXP_CONTEXT_WRAP(context, (alSourcePlayv(n, sources)))
+}
+void            alSourceStopvExplicitEXT        (ALCcontext* context, ALsizei n, const ALuint *sources) {
+    ALEXP_CONTEXT_WRAP(context, (alSourceStopv(n, sources)))
+}
+void            alSourceRewindvExplicitEXT      (ALCcontext* context, ALsizei n, const ALuint *sources) {
+    ALEXP_CONTEXT_WRAP(context, (alSourceRewindv(n, sources)))
+}
+void            alSourcePausevExplicitEXT       (ALCcontext* context, ALsizei n, const ALuint *sources) {
+    ALEXP_CONTEXT_WRAP(context, (alSourcePausev(n, sources)))
+}
+
+
+
+void            alListenerfExplicitEXT          (ALlistener listener, ALenum param, ALfloat value) {
+    ALEXP_LISTENER_WRAP(listener, (alListenerf(param, value)))
+}
+void            alListener3fExplicitEXT         (ALlistener listener, ALenum param, ALfloat value1, ALfloat value2, ALfloat value3) {
+    ALEXP_LISTENER_WRAP(listener, (alListener3f(param, value1, value2, value3)))
+}
+void            alListenerfvExplicitEXT         (ALlistener listener, ALenum param, const ALfloat *values) {
+    ALEXP_LISTENER_WRAP(listener, (alListenerfv(param, values)))
+}
+void            alListeneriExplicitEXT          (ALlistener listener, ALenum param, ALint value) {
+    ALEXP_LISTENER_WRAP(listener, (alListeneri(param, value)))
+}
+void            alListener3iExplicitEXT         (ALlistener listener, ALenum param, ALint value1, ALint value2, ALint value3) {
+    ALEXP_LISTENER_WRAP(listener, (alListener3i(param, value1, value2, value3)))
+}
+void            alListenerivExplicitEXT         (ALlistener listener, ALenum param, const ALint *values) {
+    ALEXP_LISTENER_WRAP(listener, (alListeneriv(param, values)))
+}
+void            alGetListenerfExplicitEXT       (ALlistener listener, ALenum param, ALfloat *value) {
+    ALEXP_LISTENER_WRAP(listener, (alGetListenerf(param, value)))
+}
+void            alGetListener3fExplicitEXT      (ALlistener listener, ALenum param, ALfloat *value1, ALfloat *value2, ALfloat *value3) {
+    ALEXP_LISTENER_WRAP(listener, (alGetListener3f(param, value1, value2, value3)))
+}
+void            alGetListenerfvExplicitEXT      (ALlistener listener, ALenum param, ALfloat *values) {
+    ALEXP_LISTENER_WRAP(listener, (alGetListenerfv(param, values)))
+}
+void            alGetListeneriExplicitEXT       (ALlistener listener, ALenum param, ALint *value) {
+    ALEXP_LISTENER_WRAP(listener, (alGetListeneri(param, value)))
+}
+void            alGetListener3iExplicitEXT      (ALlistener listener, ALenum param, ALint *value1, ALint *value2, ALint *value3) {
+    ALEXP_LISTENER_WRAP(listener, (alGetListener3i(param, value1, value2, value3)))
+}
+void            alGetListenerivExplicitEXT      (ALlistener listener, ALenum param, ALint *values) {
+    ALEXP_LISTENER_WRAP(listener, (alGetListeneriv(param, values)))
+}
 
 
 
