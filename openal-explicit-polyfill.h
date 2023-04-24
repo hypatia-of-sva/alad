@@ -304,7 +304,7 @@ void            alGetListenerivExplicitEXT      (ALlistener listener, ALenum par
 ALlistener      alCreateListenerEXT             (ALCcontext* context) {
   return context;
 }
-ALboolean       alsIListenerinContextEXT        (ALCcontext* context, ALlistener listener) {
+ALboolean       alIsListenerinContextEXT        (ALCcontext* context, ALlistener listener) {
   return context == listener;
 }
 void            alDestroyListenerEXT            (ALCcontext* context, ALlistener listener) {
