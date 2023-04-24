@@ -106,9 +106,10 @@ void            alDestroyListenerEXT            (ALCcontext* context, ALlistener
                                                                             \
                 if(oldDevice != device) {                                   \
                     alcMakeContextCurrent(oldContext);                      \
+                    alcDestroyContext(helperContext);                       \
                 }                                                           \
             } while(0);                                                     
-
+            
 
 #define ALEXP_CONTEXT_WRAP(context, code)                                   \
             do {                                                            \
