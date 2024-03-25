@@ -125,7 +125,7 @@
 #define ALAD_H
 
 /* revision date */
-#define ALAD_HEADER_REVISION 0x20230420
+#define ALAD_HEADER_REVISION 0x20240323
 
 #ifndef __cplusplus
 #ifndef nullptr
