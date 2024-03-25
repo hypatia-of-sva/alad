@@ -321,6 +321,18 @@ extern LPALBUFFERCALLBACKSOFT           alad_alBufferCallbackSOFT;
 extern LPALGETBUFFERPTRSOFT             alad_alGetBufferPtrSOFT;
 extern LPALGETBUFFER3PTRSOFT            alad_alGetBuffer3PtrSOFT;
 extern LPALGETBUFFERPTRVSOFT            alad_alGetBufferPtrvSOFT;
+/* AL_SOFT_source_start_delay */
+extern LPALSOURCEPLAYATTIMESOFT         alad_alSourcePlayAtTimeSOFT;
+extern LPALSOURCEPLAYATTIMEVSOFT        alad_alSourcePlayAtTimevSOFT;
+/* AL_EXT_debug */
+extern LPALDEBUGMESSAGECALLBACKEXT      alad_alDebugMessageCallbackEXT;
+extern LPALDEBUGMESSAGEINSERTEXT        alad_alDebugMessageInsertEXT;
+extern LPALDEBUGMESSAGECONTROLEXT       alad_alDebugMessageControlEXT;
+extern LPALPUSHDEBUGGROUPEXT            alad_alPushDebugGroupEXT;
+extern LPALPOPDEBUGGROUPEXT             alad_alPopDebugGroupEXT;
+extern LPALGETDEBUGMESSAGELOGEXT        alad_alGetDebugMessageLogEXT;
+extern LPALOBJECTLABELEXT               alad_alObjectLabelEXT;
+extern LPALGETOBJECTLABELEXT            alad_alGetObjectLabelEXT;
 
 /* Core ALC */
 extern LPALCCREATECONTEXT               alad_alcCreateContext;
@@ -519,6 +531,18 @@ extern LPALCREOPENDEVICESOFT            alad_alcReopenDeviceSOFT;
 #define alGetBufferPtrSOFT              alad_alGetBufferPtrSOFT
 #define alGetBuffer3PtrSOFT             alad_alGetBuffer3PtrSOFT
 #define alGetBufferPtrvSOFT             alad_alGetBufferPtrvSOFT
+/* AL_SOFT_source_start_delay */
+#define alSourcePlayAtTimeSOFT          alad_alSourcePlayAtTimeSOFT
+#define alSourcePlayAtTimevSOFT         alad_alSourcePlayAtTimevSOFT
+/* AL_EXT_debug */
+#define alDebugMessageCallbackEXT       alad_alDebugMessageCallbackEXT;
+#define alDebugMessageInsertEXT         alad_alDebugMessageInsertEXT;
+#define alDebugMessageControlEXT        alad_alDebugMessageControlEXT;
+#define alPushDebugGroupEXT             alad_alPushDebugGroupEXT;
+#define alPopDebugGroupEXT              alad_alPopDebugGroupEXT;
+#define alGetDebugMessageLogEXT         alad_alGetDebugMessageLogEXT;
+#define alObjectLabelEXT                alad_alObjectLabelEXT;
+#define alGetObjectLabelEXT             alad_alGetObjectLabelEXT;
 
 /* Core ALC */
 #define alcCreateContext                alad_alcCreateContext
@@ -726,6 +750,15 @@ LPALGETBUFFERPTRVSOFT            alad_alGetBufferPtrvSOFT            = nullptr;
 /* AL_SOFT_source_start_delay */
 LPALSOURCEPLAYATTIMESOFT         alad_alSourcePlayAtTimeSOFT         = nullptr;
 LPALSOURCEPLAYATTIMEVSOFT        alad_alSourcePlayAtTimevSOFT        = nullptr;
+/* AL_EXT_debug */
+LPALDEBUGMESSAGECALLBACKEXT      alad_alDebugMessageCallbackEXT      = nullptr;
+LPALDEBUGMESSAGEINSERTEXT        alad_alDebugMessageInsertEXT        = nullptr;
+LPALDEBUGMESSAGECONTROLEXT       alad_alDebugMessageControlEXT       = nullptr;
+LPALPUSHDEBUGGROUPEXT            alad_alPushDebugGroupEXT            = nullptr;
+LPALPOPDEBUGGROUPEXT             alad_alPopDebugGroupEXT             = nullptr;
+LPALGETDEBUGMESSAGELOGEXT        alad_alGetDebugMessageLogEXT        = nullptr;
+LPALOBJECTLABELEXT               alad_alObjectLabelEXT               = nullptr;
+LPALGETOBJECTLABELEXT            alad_alGetObjectLabelEXT            = nullptr;
 
 /* Core ALC */
 LPALCCREATECONTEXT               alad_alcCreateContext               = nullptr;
@@ -1076,6 +1109,15 @@ static void alad_load_al_extension_functions_ () {
         /* AL_SOFT_source_start_delay */
         alad_alSourcePlayAtTimeSOFT        = REINTERPRET_CAST(LPALSOURCEPLAYATTIMESOFT, compat_alGetProcAddress ("alSourcePlayAtTimeSOFT"));
         alad_alSourcePlayAtTimevSOFT       = REINTERPRET_CAST(LPALSOURCEPLAYATTIMEVSOFT, compat_alGetProcAddress ("alSourcePlayAtTimevSOFT"));
+        /* AL_EXT_debug */
+        alad_alDebugMessageCallbackEXT      = REINTERPRET_CAST(LPALDEBUGMESSAGECALLBACKEXT, compat_alGetProcAddress ("alDebugMessageCallbackEXT"));
+        alad_alDebugMessageInsertEXT        = REINTERPRET_CAST(LPALDEBUGMESSAGEINSERTEXT, compat_alGetProcAddress ("alDebugMessageInsertEXT"));
+        alad_alDebugMessageControlEXT       = REINTERPRET_CAST(LPALDEBUGMESSAGECONTROLEXT, compat_alGetProcAddress ("alDebugMessageControlEXT"));
+        alad_alPushDebugGroupEXT            = REINTERPRET_CAST(LPALPUSHDEBUGGROUPEXT, compat_alGetProcAddress ("alPushDebugGroupEXT"));
+        alad_alPopDebugGroupEXT             = REINTERPRET_CAST(LPALPOPDEBUGGROUPEXT, compat_alGetProcAddress ("alPopDebugGroupEXT"));
+        alad_alGetDebugMessageLogEXT        = REINTERPRET_CAST(LPALGETDEBUGMESSAGELOGEXT, compat_alGetProcAddress ("alGetDebugMessageLogEXT"));
+        alad_alObjectLabelEXT               = REINTERPRET_CAST(LPALOBJECTLABELEXT, compat_alGetProcAddress ("alObjectLabelEXT"));
+        alad_alGetObjectLabelEXT            = REINTERPRET_CAST(LPALGETOBJECTLABELEXT, compat_alGetProcAddress ("alGetObjectLabelEXT"));
 }
 
 static void alad_load_alc_functions_contextfree_dlsym_ (alad_module_t_ module) {
