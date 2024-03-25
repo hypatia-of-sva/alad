@@ -374,6 +374,10 @@ extern LPALCRESETDEVICESOFT             alad_alcResetDeviceSOFT;
 extern LPALCGETINTEGER64VSOFT           alad_alcGetInteger64vSOFT;
 /* ALC_SOFT_reopen_device */
 extern LPALCREOPENDEVICESOFT            alad_alcReopenDeviceSOFT;
+/* ALC_SOFT_system_events */
+extern LPALCEVENTISSUPPORTEDSOFT        alad_alcEventIsSupportedSOFT;
+extern LPALCEVENTCONTROLSOFT            alad_alcEventControlSOFT;
+extern LPALCEVENTCALLBACKSOFT           alad_alcEventCallbackSOFT;
 
 
 
@@ -584,6 +588,10 @@ extern LPALCREOPENDEVICESOFT            alad_alcReopenDeviceSOFT;
 #define alcGetInteger64vSOFT            alad_alcGetInteger64vSOFT
 /* ALC_SOFT_reopen_device */
 #define alcReopenDeviceSOFT             alad_alcReopenDeviceSOFT
+/* ALC_SOFT_system_events */
+#define alcEventIsSupportedSOFT         alad_alcEventIsSupportedSOFT;
+#define alcEventControlSOFT             alad_alcEventControlSOFT;
+#define alcEventCallbackSOFT            alad_alcEventCallbackSOFT;
 
 
 
@@ -800,6 +808,11 @@ LPALCRESETDEVICESOFT             alad:alcResetDeviceSOFT             = nullptr;
 LPALCGETINTEGER64VSOFT           alad_alcGetInteger64vSOFT           = nullptr;
 /* ALC_SOFT_reopen_device */
 LPALCREOPENDEVICESOFT            alad_alcReopenDeviceSOFT            = nullptr;
+/* ALC_SOFT_system_events */
+LPALCEVENTISSUPPORTEDSOFT        alad_alcEventIsSupportedSOFT        = nullptr;
+LPALCEVENTCONTROLSOFT            alad_alcEventControlSOFT            = nullptr;
+LPALCEVENTCALLBACKSOFT           alad_alcEventCallbackSOFT           = nullptr;
+
 
 
         
@@ -1199,6 +1212,10 @@ static void alad_load_alc_extension_functions_from_al_ () {
         alad_alcGetInteger64vSOFT           = REINTERPRET_CAST(LPALCGETINTEGER64VSOFT, compat_alGetProcAddress ("alcGetInteger64vSOFT"));
         /* ALC_SOFT_reopen_device */
         alad_alcReopenDeviceSOFT            = REINTERPRET_CAST(LPALCREOPENDEVICESOFT, compat_alGetProcAddress ("alcReopenDeviceSOFT"));
+        /* ALC_SOFT_system_events */
+        alad_alcEventIsSupportedSOFT        = REINTERPRET_CAST(LPALCEVENTISSUPPORTEDSOFT, compat_alGetProcAddress ("alcEventIsSupportedSOFT"));
+        alad_alcEventControlSOFT            = REINTERPRET_CAST(LPALCEVENTCONTROLSOFT, compat_alGetProcAddress ("alcEventControlSOFT"));
+        alad_alcEventCallbackSOFT           = REINTERPRET_CAST(LPALCEVENTCALLBACKSOFT, compat_alGetProcAddress ("alcEventCallbackSOFT"));
 }
 
 static void alad_load_alc_functions_ (ALCdevice *device) {
@@ -1256,6 +1273,10 @@ static void alad_load_alc_extension_functions_ (ALCdevice *device) {
         alad_alcGetInteger64vSOFT           = REINTERPRET_CAST(LPALCGETINTEGER64VSOFT, compat_alcGetProcAddress (device, "alcGetInteger64vSOFT"));
         /* ALC_SOFT_reopen_device */
         alad_alcReopenDeviceSOFT            = REINTERPRET_CAST(LPALCREOPENDEVICESOFT, compat_alcGetProcAddress (device, "alcReopenDeviceSOFT"));
+        /* ALC_SOFT_system_events */
+        alad_alcEventIsSupportedSOFT        = REINTERPRET_CAST(LPALCEVENTISSUPPORTEDSOFT, compat_alcGetProcAddress (device, "alcEventIsSupportedSOFT"));
+        alad_alcEventControlSOFT            = REINTERPRET_CAST(LPALCEVENTCONTROLSOFT, compat_alcGetProcAddress (device, "alcEventControlSOFT"));
+        alad_alcEventCallbackSOFT           = REINTERPRET_CAST(LPALCEVENTCALLBACKSOFT, compat_alcGetProcAddress (device, "alcEventCallbackSOFT"));
 }
 
 
