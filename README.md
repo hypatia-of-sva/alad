@@ -24,12 +24,12 @@ This will pull in all OpenAL symbols except the functions, by loading in the AL 
 In order for this to work, you need up to date header files, download them from the master branch of openal-soft:
     https://github.com/kcat/openal-soft/tree/master/include.
 (Currently to 1.23.1).
-alad can't currently check on whether or not the headers work properly, but compilation will fail due to double definition or undefined types.
+alad can't currently check on whether or not the headers work properly, but compilation will fail due to undefined types.
 Keep that in mind if you have compilation issues and put those headers under <AL/alext.h> and <AL/efx-presets.h> (the others are included in alext.h).
 
-There are two interfaces to initialize the API, the (recomended) simplified interface and the manual interface with more options. 
+There are three interfaces to initialize the API, the (recommended) simplified interface, the manual interface for explicit function loading and the legacy manual interface.  
 
-### Simplified Interface
+### Simplified Interface (generally recommended)
 
 The simplified interface initializes the library first with
 
@@ -39,7 +39,7 @@ which loads in all the core functions from the shared library. This should be en
 
         aladUpdateAL();
 
-which will load all extensions with the current context and its device. If an extension is not present, its functions will be NULL, check for that.
+which will load all extensions, except AL_EXT_direct_context, with the current context and its device. If an extension is not present, its functions will be NULL, check for that.
 
 The ALC functions are only valid for the current context's device (and technically the AL functions also for the context). If you change the device, call aladUpdateAL(); again. (If you make another context current, you can also do that, but most implementations of OpenAL will not differentiate between contexts on the same device for functionality, although it is allowed by the specification.)
 
@@ -56,11 +56,30 @@ The library should be named
 
 and should be on path for LoadLibraryA / dlopen.
 
-alad will attempt to load all function pointers in all extensions as currently described in the [openal-soft](https://github.com/kcat/openal-soft) headers (repo version from 24.12.2022, commit https://github.com/kcat/openal-soft/commit/4fe6eba8c79a4c9cad91d6f6835506cde96a48c4), the ones not available will be NULL, you have to check all functions you want to use for that.
+alad will attempt to load all function pointers in all extensions as currently described in the [openal-soft](https://github.com/kcat/openal-soft) headers, except AL_EXT_direct_context, (repo version from 14.03.2024, commit https://github.com/kcat/openal-soft/commit/43913b1f03fb92ea232bf989f6d6172524acd563), the ones not available will be NULL, you have to check all functions you want to use for that.
 The ALC_INVALID_VALUE-Error-State of alcGetProcAddress is not being checked.
 
 
-### Manual interface (not recommended, only use for troubleshooting like debugging the DLL / shared object)
+### Manual Interface (only recommended for working with AL_EXT_direct_context)
+
+In this Interface, you will directly be working with function pointers, and you will have to provide the loader yourself. There are three struct types: `aladALFunctions`, `aladALCFunctions` and `aladDirectFunctions`, which provide members for `al` and `alc` functions except `AL_EXT_direct_context`, and for the pointers of `AL_EXT_direct_context` respectively, where for the first two the common prexix al and alc is missing. The functions are loaded by the following utility functions:
+
+        typedef void (*aladFunction) (void);
+        typedef aladFunction (*aladLoader) (const char *name);
+        void aladLoadALCoreMinimal(aladALFunctions* functions, aladLoader loader);
+        void aladLoadALCoreRest(aladALFunctions* functions, aladLoader loader);
+        void aladLoadEFX(aladALFunctions* functions, aladLoader loader);
+        void aladLoadALExtensions(aladALFunctions* functions, aladLoader loader);
+        void aladLoadALCCore(aladALFunctions* functions, aladLoader loader);
+        void aladLoadALCExtensions(aladALFunctions* functions, aladLoader loader);
+        void aladLoadDirectExtension(aladDirectFunctions* functions, aladLoader loader);
+
+which together load all function pointers except `alGetProcAddress` and `alcGetProcAddress` (as the `GetProcAddress` member of `aladALFunctions` and `aladALCFunctions` respectively). These functions, unlike those of the legacy interface, can be intermixed with those loaded by the simplified interface. This means that one option is to first use the simplified interface to load the function pointers from the DLL, and then use these functions to optain explicit function pointers by functions like `alcGetProcAddress2`. The wrapping to get those functions to fir the aladLoader type, such as currying the device handle, is something that you will have to do yourself.
+
+You might also want to consider defining the macro `ALAD_NO_SHORT_NAMES`, this will then not define names such as `alGetInteger`. Instead, after the default intialization `aladLoadAL();`, you will have to call `aladAL.GetInteger`. However, this also means you can define these names yourself without the use of `#undef`.
+
+
+### Legacy Manual interface (not recommended, description will not be updated)
 
 The manual interface initializes the function pointers first with
 
