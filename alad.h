@@ -16,7 +16,7 @@
  *  This header loads in all OpenAL symbols except the functions, by loading in the AL headers with AL_NO_PROTOTYPES and ALC_NO_PROTOTYPES defined.
  *  In order for this to work, you need up to date header files, download them from the master branch of openal-soft:
  *      https://github.com/kcat/openal-soft/tree/master/include
- *  (Currently to 1.23.1)
+ *  (Currently to 1.24.2)
  *  alad can't currently check on whether or not the headers work properly, but compilation will fail due to undefined types.
  *  Keep that in mind if you have compilation issues and put those headers under <AL/alext.h> and <AL/efx-presets.h> (the others are included in alext.h).
  *
@@ -139,7 +139,7 @@
  * 
  *  
  *  alad will attempt to load all function pointers in all extensions as currently described in the openal-soft headers
- *  (repo version from 24.12.2022, commit https://github.com/kcat/openal-soft/commit/4fe6eba8c79a4c9cad91d6f6835506cde96a48c4),
+ *  (repo version from 24.03.2025, commit https://github.com/kcat/openal-soft/commit/69c738b88b4e1d96a3f505ae6279bbfc4629abd3),
  *  the ones not available will be NULL, you have to check all functions you want to use for that. you have to check all functions you want to use for that.
  *  The ALC_INVALID_VALUE-Error-State of alcGetProcAddress is not being checked.
  *  If a functionality you expect to be present isn't working, you might want to check the spelling of the
@@ -155,7 +155,7 @@
 #define ALAD_H
 
 /* revision date */
-#define ALAD_HEADER_REVISION 0x20240503
+#define ALAD_HEADER_REVISION 0x20250325
 
 #ifndef __cplusplus
 #ifndef nullptr
@@ -346,6 +346,8 @@ extern "C" {
 #define alGetDebugMessageLogEXT         aladAL.GetDebugMessageLogEXT;
 #define alObjectLabelEXT                aladAL.ObjectLabelEXT;
 #define alGetObjectLabelEXT             aladAL.GetObjectLabelEXT;
+#define alGetPointerEXT                 aladAL.GetPointerEXT;
+#define alGetPointervEXT                aladAL.GetPointervEXT;
 
 /* Core ALC */
 #define alcCreateContext                aladALC.CreateContext
@@ -577,6 +579,8 @@ typedef struct aladALFunctions {
     LPALGETDEBUGMESSAGELOGEXT        GetDebugMessageLogEXT;
     LPALOBJECTLABELEXT               ObjectLabelEXT;
     LPALGETOBJECTLABELEXT            GetObjectLabelEXT;
+    LPALGETPOINTEREXT                GetPointerEXT;
+    LPALGETPOINTERVEXT               GetPointervEXT;
 } aladALFunctions;
 typedef struct aladALCFunctions {
     /* Function Loader */
@@ -744,6 +748,8 @@ typedef struct aladDirectFunctions {
     LPALGETDEBUGMESSAGELOGDIRECTEXT         alGetDebugMessageLogDirectEXT;
     LPALOBJECTLABELDIRECTEXT                alObjectLabelDirectEXT;
     LPALGETOBJECTLABELDIRECTEXT             alGetObjectLabelDirectEXT;
+    LPALGETPOINTERDIRECTEXT                 alGetPointerDirectEXT;
+    LPALGETPOINTERVDIRECTEXT                alGetPointervDirectEXT;
         /* AL_EXT_FOLDBACK */
     LPALREQUESTFOLDBACKSTARTDIRECT          alRequestFoldbackStartDirect;
     LPALREQUESTFOLDBACKSTOPDIRECT           alRequestFoldbackStopDirect;
@@ -972,6 +978,8 @@ void aladLoadALExtensions(aladALFunctions* functions, aladLoader loader) {
     functions[0].GetDebugMessageLogEXT       = REINTERPRET_CAST(LPALGETDEBUGMESSAGELOGEXT,          loader("alGetDebugMessageLogEXT"));
     functions[0].ObjectLabelEXT              = REINTERPRET_CAST(LPALOBJECTLABELEXT,                 loader("alObjectLabelEXT"));
     functions[0].GetObjectLabelEXT           = REINTERPRET_CAST(LPALGETOBJECTLABELEXT,              loader("alGetObjectLabelEXT"));
+    functions[0].GetPointerEXT               = REINTERPRET_CAST(LPALGETPOINTEREXT,                  loader("alGetPointerEXT"));
+    functions[0].GetPointervEXT              = REINTERPRET_CAST(LPALGETPOINTERVEXT,                 loader("alGetPointervEXT"));
 }
 void aladLoadALCCore(aladALFunctions* functions, aladLoader loader) {
     functions[0].CreateContext      = REINTERPRET_CAST(LPALCCREATECONTEXT,      loader("alcCreateContext"));
@@ -1138,6 +1146,8 @@ void aladLoadDirectExtension(aladDirectFunctions* functions, aladLoader loader) 
     functions[0].alGetDebugMessageLogDirectEXT           = REINTERPRET_CAST(LPALGETDEBUGMESSAGELOGDIRECTEXT      ,loader("alGetDebugMessageLogDirectEXT"));
     functions[0].alObjectLabelDirectEXT                  = REINTERPRET_CAST(LPALOBJECTLABELDIRECTEXT             ,loader("alObjectLabelDirectEXT"));
     functions[0].alGetObjectLabelDirectEXT               = REINTERPRET_CAST(LPALGETOBJECTLABELDIRECTEXT          ,loader("alGetObjectLabelDirectEXT"));
+    functions[0].alGetPointerDirectEXT                   = REINTERPRET_CAST(LPALGETPOINTERDIRECTEXT              ,loader("alGetPointerDirectEXT"))
+    functions[0].alGetPointervDirectEXT                  = REINTERPRET_CAST(LPALGETPOINTERVDIRECTEXT             ,loader("alGetPointervDirectEXT"))
         /* AL_EXT_FOLDBACK */
     functions[0].alRequestFoldbackStartDirect            = REINTERPRET_CAST(LPALREQUESTFOLDBACKSTARTDIRECT       ,loader("alRequestFoldbackStartDirect"));
     functions[0].alRequestFoldbackStopDirect             = REINTERPRET_CAST(LPALREQUESTFOLDBACKSTOPDIRECT        ,loader("alRequestFoldbackStopDirect"));
