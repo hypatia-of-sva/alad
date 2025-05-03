@@ -797,8 +797,8 @@ extern void aladLoadALCoreMinimal(aladALFunctions* functions, aladLoader loader)
 extern void aladLoadALCoreRest(aladALFunctions* functions, aladLoader loader);
 extern void aladLoadEFX(aladALFunctions* functions, aladLoader loader);
 extern void aladLoadALExtensions(aladALFunctions* functions, aladLoader loader);
-extern void aladLoadALCCore(aladALFunctions* functions, aladLoader loader);
-extern void aladLoadALCExtensions(aladALFunctions* functions, aladLoader loader);
+extern void aladLoadALCCore(aladALCFunctions* functions, aladLoader loader);
+extern void aladLoadALCExtensions(aladALCFunctions* functions, aladLoader loader);
 extern void aladLoadDirectExtension(aladDirectFunctions* functions, aladLoader loader);
 
 /* global function pointers used by the other interfaces */
@@ -981,7 +981,7 @@ void aladLoadALExtensions(aladALFunctions* functions, aladLoader loader) {
     functions[0].GetPointerEXT               = REINTERPRET_CAST(LPALGETPOINTEREXT,                  loader("alGetPointerEXT"));
     functions[0].GetPointervEXT              = REINTERPRET_CAST(LPALGETPOINTERVEXT,                 loader("alGetPointervEXT"));
 }
-void aladLoadALCCore(aladALFunctions* functions, aladLoader loader) {
+void aladLoadALCCore(aladALCFunctions* functions, aladLoader loader) {
     functions[0].CreateContext      = REINTERPRET_CAST(LPALCCREATECONTEXT,      loader("alcCreateContext"));
     functions[0].MakeContextCurrent = REINTERPRET_CAST(LPALCMAKECONTEXTCURRENT, loader("alcMakeContextCurrent"));
     functions[0].ProcessContext     = REINTERPRET_CAST(LPALCPROCESSCONTEXT,     loader("alcProcessContext"));
@@ -1002,7 +1002,7 @@ void aladLoadALCCore(aladALFunctions* functions, aladLoader loader) {
     functions[0].CaptureStop        = REINTERPRET_CAST(LPALCCAPTURESTOP,        loader("alcCaptureStop"));
     functions[0].CaptureSamples     = REINTERPRET_CAST(LPALCCAPTURESAMPLES,     loader("alcCaptureSamples"));
 }
-void aladLoadALCExtensions(aladALFunctions* functions, aladLoader loader) {
+void aladLoadALCExtensions(aladALCFunctions* functions, aladLoader loader) {
     /* ALC_EXT_thread_local_context */
     functions[0].SetThreadContext            = REINTERPRET_CAST(PFNALCSETTHREADCONTEXTPROC,         loader("alcSetThreadContext"));
     functions[0].GetThreadContext            = REINTERPRET_CAST(PFNALCGETTHREADCONTEXTPROC,         loader("alcGetThreadContext"));
@@ -1146,8 +1146,8 @@ void aladLoadDirectExtension(aladDirectFunctions* functions, aladLoader loader) 
     functions[0].alGetDebugMessageLogDirectEXT           = REINTERPRET_CAST(LPALGETDEBUGMESSAGELOGDIRECTEXT      ,loader("alGetDebugMessageLogDirectEXT"));
     functions[0].alObjectLabelDirectEXT                  = REINTERPRET_CAST(LPALOBJECTLABELDIRECTEXT             ,loader("alObjectLabelDirectEXT"));
     functions[0].alGetObjectLabelDirectEXT               = REINTERPRET_CAST(LPALGETOBJECTLABELDIRECTEXT          ,loader("alGetObjectLabelDirectEXT"));
-    functions[0].alGetPointerDirectEXT                   = REINTERPRET_CAST(LPALGETPOINTERDIRECTEXT              ,loader("alGetPointerDirectEXT"))
-    functions[0].alGetPointervDirectEXT                  = REINTERPRET_CAST(LPALGETPOINTERVDIRECTEXT             ,loader("alGetPointervDirectEXT"))
+    functions[0].alGetPointerDirectEXT                   = REINTERPRET_CAST(LPALGETPOINTERDIRECTEXT              ,loader("alGetPointerDirectEXT"));
+    functions[0].alGetPointervDirectEXT                  = REINTERPRET_CAST(LPALGETPOINTERVDIRECTEXT             ,loader("alGetPointervDirectEXT"));
         /* AL_EXT_FOLDBACK */
     functions[0].alRequestFoldbackStartDirect            = REINTERPRET_CAST(LPALREQUESTFOLDBACKSTARTDIRECT       ,loader("alRequestFoldbackStartDirect"));
     functions[0].alRequestFoldbackStopDirect             = REINTERPRET_CAST(LPALREQUESTFOLDBACKSTOPDIRECT        ,loader("alRequestFoldbackStopDirect"));
@@ -1265,15 +1265,15 @@ void alad_load_lib_(void) {
 /* simplified Interface */
 void aladLoadAL () {
     alad_load_lib_();
-    aladAL.GetProcAddress = alad_load_global_("alGetProcAddress");
+    aladAL.GetProcAddress = REINTERPRET_CAST(LPALGETPROCADDRESS           , alad_load_global_("alGetProcAddress"));
     aladLoadALCoreMinimal(&aladAL, alad_load_global_);
     aladLoadALCoreRest(&aladAL, alad_load_global_);
-    aladALC.GetProcAddress = alad_load_global_("alcGetProcAddress");
+    aladALC.GetProcAddress = REINTERPRET_CAST(LPALCGETPROCADDRESS, alad_load_global_("alcGetProcAddress"));
     aladLoadALCCore(&aladALC, alad_load_global_);
 }
 void aladUpdateAL () {
-    aladLoadEFX(&aladAL, aladAL.GetProcAddress);
-    aladLoadALExtensions(&aladAL, aladAL.GetProcAddress);
+    aladLoadEFX(&aladAL, (aladLoader) aladAL.GetProcAddress);
+    aladLoadALExtensions(&aladAL, (aladLoader) aladAL.GetProcAddress);
     aladBakedDevice_ = aladALC.GetContextsDevice(aladALC.GetCurrentContext());
     if(aladALC.GetProcAddress != nullptr) aladLoadALCExtensions(&aladALC, alad_load_alc_with_baked_device_);
 }
@@ -1285,12 +1285,12 @@ void aladTerminate () {
 /* old manual interface */
 void aladLoadALContextFree (ALboolean loadAll) {
     alad_load_lib_();
-    aladAL.GetProcAddress = alad_load_global_("alGetProcAddress");
+    aladAL.GetProcAddress = REINTERPRET_CAST(LPALGETPROCADDRESS           , alad_load_global_("alGetProcAddress"));
     aladLoadALCoreMinimal(&aladAL, alad_load_global_);
     if (loadAll != AL_FALSE) {
         aladLoadALCoreRest(&aladAL, alad_load_global_);
     }
-    aladALC.GetProcAddress = alad_load_global_("alcGetProcAddress");
+    aladALC.GetProcAddress = REINTERPRET_CAST(LPALCGETPROCADDRESS, alad_load_global_("alcGetProcAddress"));
     aladLoadALCCore(&aladALC, alad_load_global_);
 }
 void aladLoadALFromLoaderFunction (LPALGETPROCADDRESS inital_loader) {
@@ -1302,11 +1302,11 @@ void aladLoadALFromLoaderFunction (LPALGETPROCADDRESS inital_loader) {
             aladAL.GetProcAddress = nullptr;
             return;
         }
-        else aladAL.GetProcAddress = alad_load_global_("alGetProcAddress");
+        else aladAL.GetProcAddress = REINTERPRET_CAST(LPALGETPROCADDRESS           ,  alad_load_global_("alGetProcAddress"));
     }
     aladLoadALCoreMinimal(&aladAL, (aladLoader) aladAL.GetProcAddress);
     aladLoadALCoreRest(&aladAL, (aladLoader) aladAL.GetProcAddress);
-    if(aladALC.GetProcAddress == nullptr) aladALC.GetProcAddress = ((aladLoader) aladAL.GetProcAddress)("alcGetProcAddress");
+    if(aladALC.GetProcAddress == nullptr) aladALC.GetProcAddress = REINTERPRET_CAST(LPALCGETPROCADDRESS,  ((aladLoader) aladAL.GetProcAddress)("alcGetProcAddress"));
     aladLoadALCCore(&aladALC, (aladLoader) aladAL.GetProcAddress);
 }
 void aladUpdateALPointers (ALCcontext *context, ALboolean extensionsOnly) {
@@ -1332,7 +1332,7 @@ void aladUpdateALCPointersFromContext (ALCcontext *context, ALboolean extensions
         aladALC.MakeContextCurrent(context);
     }
     if (extensionsOnly == AL_FALSE) {
-        if(aladALC.GetProcAddress == nullptr) aladALC.GetProcAddress = ((aladLoader) aladAL.GetProcAddress)("alcGetProcAddress");
+        if(aladALC.GetProcAddress == nullptr) aladALC.GetProcAddress = REINTERPRET_CAST(LPALCGETPROCADDRESS, ((aladLoader) aladAL.GetProcAddress)("alcGetProcAddress"));
         aladLoadALCCore(&aladALC, (aladLoader) aladAL.GetProcAddress);
     }
     aladLoadALCExtensions(&aladALC, (aladLoader) aladAL.GetProcAddress);
